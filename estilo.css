@@ -201,31 +201,77 @@ h2.sem-rabisco::after{display:none}
 .arvore-topo{display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap;padding:0 0 .8rem .6rem}
 .arvore-raiz{font-family:'Outfit',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;color:var(--verde)}
 .arvore-topo a{font-size:.85rem}
-.arvore ul{list-style:none;padding-left:1.3rem;border-left:2px dotted rgba(39,33,26,.35);margin-left:.55rem}
-.arvore > ul{border-left:none;margin-left:0;padding-left:.4rem}
-.arvore li{margin:.35rem 0}
-.no-pessoa{
-    display:inline-block;background:none;border:none;cursor:pointer;text-align:left;
-    font-family:'Lora',serif;font-size:1rem;color:var(--tinta);padding:.14rem .4rem;border-radius:var(--r-sm);
-    transition:background var(--tempo) ease,transform var(--tempo) var(--mola);
+/* A árvore é um diagrama centrado numa pessoa: o que veio antes sobe, o que
+   veio depois desce. Os traços são borda de pseudo-elemento — meio-trilho à
+   esquerda e à direita de cada cartão, mais a haste vertical. Nas pontas, o
+   meio-trilho de fora some, e é isso que fecha o desenho sem sobra. */
+.arv{display:flex;flex-direction:column;align-items:center;min-width:max-content;padding:.3rem 1rem 1rem}
+.arv .galho{display:flex;flex-direction:column;align-items:center}
+
+/* ── para cima: pais, avós, bisavós ── */
+.acima{display:flex;justify-content:center;align-items:flex-end;gap:.55rem;
+       position:relative;padding-bottom:26px}
+.acima::after{content:"";position:absolute;bottom:0;left:50%;height:13px;border-left:var(--b) solid var(--tinta)}
+.acima > .galho{position:relative;padding-bottom:13px}
+.acima > .galho::before,
+.acima > .galho::after{content:"";position:absolute;bottom:0;right:50%;width:50%;height:13px;
+                       border-bottom:var(--b) solid var(--tinta)}
+.acima > .galho::after{right:auto;left:50%;border-left:var(--b) solid var(--tinta)}
+.acima > .galho:only-child::before{display:none}
+.acima > .galho:only-child::after{border-bottom:0}
+.acima > .galho:first-child::before{border:0 none}
+.acima > .galho:last-child::after{border-bottom:0}
+
+/* ── para baixo: filhos e netos ── */
+.abaixo{display:flex;justify-content:center;align-items:flex-start;gap:.55rem;
+        position:relative;padding-top:26px}
+.abaixo::before{content:"";position:absolute;top:0;left:50%;height:13px;border-left:var(--b) solid var(--tinta)}
+.abaixo > .galho{position:relative;padding-top:13px}
+.abaixo > .galho::before,
+.abaixo > .galho::after{content:"";position:absolute;top:0;right:50%;width:50%;height:13px;
+                        border-top:var(--b) solid var(--tinta)}
+.abaixo > .galho::after{right:auto;left:50%;border-left:var(--b) solid var(--tinta)}
+.abaixo > .galho:only-child::before{display:none}
+.abaixo > .galho:only-child::after{border-top:0}
+.abaixo > .galho:first-child::before{border:0 none}
+.abaixo > .galho:last-child::after{border-top:0}
+
+/* ── o meio ── */
+.centro{display:flex;justify-content:center;align-items:center;gap:.7rem;flex-wrap:wrap;padding:2px 0}
+.pares{display:flex;gap:.45rem;flex-wrap:wrap;justify-content:center}
+.com-quem{font-family:'Outfit',sans-serif;font-weight:600;font-size:.68rem;text-transform:uppercase;
+          letter-spacing:.11em;color:var(--musgo);margin:.7rem 0 -.3rem;text-align:center}
+
+/* ── o cartão de cada pessoa ── */
+.cartao{
+    display:flex;flex-direction:column;align-items:center;gap:.22rem;
+    background:var(--creme);border:var(--b) solid var(--tinta);border-radius:var(--r-md);
+    box-shadow:var(--pop-baixa);padding:.5rem .55rem;min-width:96px;max-width:136px;
+    font-family:'Outfit',sans-serif;color:var(--tinta);cursor:pointer;
+    transition:transform var(--tempo) var(--mola),box-shadow var(--tempo) ease;
 }
-.no-pessoa:hover,.no-pessoa:focus-visible{background:var(--papel);outline:none;transform:translateX(2px)}
-.no-pessoa .datas{font-size:.78rem;color:var(--musgo)}
-.no-pessoa.extra::after{content:" \2726";color:var(--vermelho)}
-.no-pessoa.reservado::after{content:" \00B7";color:var(--musgo)}
-.uniao{font-family:'Outfit',sans-serif;font-weight:600;font-size:.72rem;
-       text-transform:uppercase;letter-spacing:.1em;color:var(--musgo);margin:.45rem 0 .1rem}
-details.ramo > summary{cursor:pointer;list-style:none;display:inline-block}
-details.ramo > summary::-webkit-details-marker{display:none}
-details.ramo > summary::before{
-    content:"+";display:inline-block;width:1.2rem;height:1.2rem;line-height:1.05rem;text-align:center;
-    border:var(--b) solid var(--tinta);border-radius:6px;background:var(--papel);
-    font-family:'Outfit',sans-serif;font-weight:800;font-size:.8rem;
-    margin-right:.35rem;vertical-align:2px;box-shadow:var(--pop-baixa);
-    transition:transform var(--tempo) var(--mola);
+.cartao:hover,.cartao:focus-visible{transform:translate(-2px,-2px);box-shadow:var(--pop);outline:none}
+.cartao-nome{font-weight:700;font-size:.78rem;line-height:1.18;text-align:center}
+.cartao-datas{font-size:.65rem;color:var(--musgo);font-weight:500}
+.cartao-foto{width:46px;height:46px;object-fit:cover;object-position:top;
+             border-radius:var(--r-full);border:var(--b) solid var(--tinta)}
+.cartao.grande{min-width:158px;max-width:210px;padding:.8rem .9rem;
+               background:var(--vermelho);color:var(--creme);box-shadow:var(--pop)}
+.cartao.grande .cartao-nome{font-size:1rem}
+.cartao.grande .cartao-datas{color:rgba(248,241,222,.85)}
+.cartao.grande .cartao-foto{width:62px;height:62px}
+.cartao.par{background:var(--papel)}
+.cartao.pequeno{min-width:78px;max-width:108px;padding:.35rem .4rem}
+.cartao.pequeno .cartao-nome{font-size:.68rem;line-height:1.1}
+.cartao.pequeno .cartao-datas{font-size:.6rem}
+.cartao.pequeno .cartao-foto{width:34px;height:34px}
+.cartao.extra .cartao-nome::after{content:" \2726";color:var(--vermelho)}
+
+@media (max-width:560px){
+    .acima,.abaixo{gap:.35rem}
+    .cartao{min-width:84px;max-width:112px}
+    .cartao.pequeno{min-width:70px;max-width:92px}
 }
-details.ramo > summary:hover::before{transform:translate(-1px,-1px) rotate(-6deg)}
-details.ramo[open] > summary::before{content:"\2212"}
 
 /* ── Ficha (modal) ───────────────────────────────────────────────────────── */
 .ficha-fundo{position:fixed;inset:0;background:rgba(39,33,26,.55);z-index:90;display:none}
@@ -471,6 +517,33 @@ footer small{color:rgba(248,241,222,.85);font-size:.82rem}
     *,*::before,*::after{transition:none!important;animation:none!important}
     .pipoca{opacity:1;transform:none}
     .marquise-trilho{transform:none;flex-wrap:wrap;width:auto;justify-content:center}
-    .adesivo:hover,.bt:hover,.no-pessoa:hover,.caixa-form button[type=submit]:hover{transform:none}
+    .adesivo:hover,.bt:hover,.cartao:hover,.caixa-form button[type=submit]:hover{transform:none}
     .recado,.historia,.definicoes li.essa,.adesivo{transform:none}
+}
+
+/* ── Retrato e álbum na ficha ────────────────────────────────────────────────
+   Só aparece na ficha de quem já faleceu — de quem está vivo a foto nem chega
+   ao HTML (ver arvoreParaOlhos() no lib.php). A moldura segue o sistema:
+   borda de 2px, sombra dura sem blur, e a inclinação de adesivo. */
+.retrato{
+    flex:0 0 auto;width:clamp(120px,28vw,190px);height:auto;
+    border:var(--b) solid var(--tinta);border-radius:var(--r-md);
+    box-shadow:var(--pop);background:var(--creme);
+    transform:rotate(-1.5deg);
+}
+.album{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:.2rem}
+.album a{display:block;line-height:0}
+.album img{
+    width:clamp(96px,22vw,150px);height:auto;
+    border:var(--b) solid var(--tinta);border-radius:var(--r-sm);
+    box-shadow:var(--pop-baixa);background:var(--creme);
+    transition:transform .15s,box-shadow .15s;
+}
+.album a:hover img{transform:translate(-2px,-2px) rotate(-1.5deg);box-shadow:var(--pop)}
+
+/* O retrato dentro da ficha que abre por cima da árvore, na home. */
+.ficha-retrato{
+    float:right;width:96px;height:auto;margin:0 0 .6rem .8rem;
+    border:var(--b) solid var(--tinta);border-radius:var(--r-sm);
+    box-shadow:var(--pop-baixa);background:var(--creme);transform:rotate(1.5deg);
 }
