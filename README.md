@@ -9,8 +9,11 @@ A árvore genealógica da família Silva e Bezerra, de Anadia-AL a Boa Vista-RR.
 Páginas prontas, sem programa nenhum rodando: a home com a árvore, o índice de
 nomes e uma ficha para cada uma das 407 pessoas.
 
-A árvore abre centrada numa pessoa — quem veio antes sobe, quem veio depois
-desce — e clicar em qualquer cartão recentra o desenho nele.
+A árvore é um diagrama centrado numa pessoa: quem veio antes sobe (até três
+gerações, no formato de pedigree), quem veio depois desce, e o cônjuge fica ao
+lado — cônjuge não é geração. Clicar em qualquer cartão põe aquela pessoa no
+meio, e é assim que se anda pelas 407 sem precisar de uma tela do tamanho da
+parede.
 
 ## Privacidade
 

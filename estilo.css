@@ -209,68 +209,102 @@ h2.sem-rabisco::after{display:none}
 .arv .galho{display:flex;flex-direction:column;align-items:center}
 
 /* ── para cima: pais, avós, bisavós ── */
-.acima{display:flex;justify-content:center;align-items:flex-end;gap:.55rem;
-       position:relative;padding-bottom:26px}
-.acima::after{content:"";position:absolute;bottom:0;left:50%;height:13px;border-left:var(--b) solid var(--tinta)}
-.acima > .galho{position:relative;padding-bottom:13px}
+.acima{display:flex;justify-content:center;align-items:flex-end;gap:.5rem;
+       position:relative;padding-bottom:36px}
+.acima::after{content:"";position:absolute;bottom:0;left:50%;height:18px;border-left:var(--b) solid var(--tinta)}
+.acima > .galho{position:relative;padding-bottom:18px}
 .acima > .galho::before,
-.acima > .galho::after{content:"";position:absolute;bottom:0;right:50%;width:50%;height:13px;
+.acima > .galho::after{content:"";position:absolute;bottom:0;right:50%;width:50%;height:18px;
                        border-bottom:var(--b) solid var(--tinta)}
 .acima > .galho::after{right:auto;left:50%;border-left:var(--b) solid var(--tinta)}
 .acima > .galho:only-child::before{display:none}
 .acima > .galho:only-child::after{border-bottom:0}
-.acima > .galho:first-child::before{border:0 none}
+.acima > .galho:first-child::before{border:0 none;border-bottom-left-radius:0}
 .acima > .galho:last-child::after{border-bottom:0}
+/* canto arredondado onde o trilho vira haste — tira o ar de tabela */
+.acima > .galho:first-child::after{border-bottom-left-radius:7px}
+.acima > .galho:last-child::before{border-bottom-right-radius:7px}
 
 /* ── para baixo: filhos e netos ── */
-.abaixo{display:flex;justify-content:center;align-items:flex-start;gap:.55rem;
-        position:relative;padding-top:26px}
-.abaixo::before{content:"";position:absolute;top:0;left:50%;height:13px;border-left:var(--b) solid var(--tinta)}
-.abaixo > .galho{position:relative;padding-top:13px}
+.abaixo{display:flex;justify-content:center;align-items:flex-start;gap:.5rem;
+        position:relative;padding-top:36px}
+.abaixo::before{content:"";position:absolute;top:0;left:50%;height:18px;border-left:var(--b) solid var(--tinta)}
+.abaixo > .galho{position:relative;padding-top:18px}
 .abaixo > .galho::before,
-.abaixo > .galho::after{content:"";position:absolute;top:0;right:50%;width:50%;height:13px;
+.abaixo > .galho::after{content:"";position:absolute;top:0;right:50%;width:50%;height:18px;
                         border-top:var(--b) solid var(--tinta)}
 .abaixo > .galho::after{right:auto;left:50%;border-left:var(--b) solid var(--tinta)}
 .abaixo > .galho:only-child::before{display:none}
 .abaixo > .galho:only-child::after{border-top:0}
 .abaixo > .galho:first-child::before{border:0 none}
 .abaixo > .galho:last-child::after{border-top:0}
+.abaixo > .galho:first-child::after{border-top-left-radius:7px}
+.abaixo > .galho:last-child::before{border-top-right-radius:7px}
 
-/* ── o meio ── */
-.centro{display:flex;justify-content:center;align-items:center;gap:.7rem;flex-wrap:wrap;padding:2px 0}
-.pares{display:flex;gap:.45rem;flex-wrap:wrap;justify-content:center}
-.com-quem{font-family:'Outfit',sans-serif;font-weight:600;font-size:.68rem;text-transform:uppercase;
-          letter-spacing:.11em;color:var(--musgo);margin:.7rem 0 -.3rem;text-align:center}
+/* ── o meio ──────────────────────────────────────────────────────────────────
+   O cartão vermelho tem que ficar no CENTRO da árvore, não no centro da linha:
+   é nele que a haste dos pais desce e é dele que a dos filhos sai. Com o
+   cônjuge só ao lado direito, o cartão escorregava para a esquerda e a linha
+   caía no vão entre os dois. Os dois `.lado` com flex igual resolvem: o vazio
+   da esquerda pesa o mesmo que os cônjuges da direita. */
+.centro{display:flex;justify-content:center;align-items:center;gap:.7rem;padding:2px 0}
+.lado{flex:none;display:flex;gap:.45rem;align-items:center}
+/* o lado esquerdo é vazio e recebe, por JavaScript, a MEDIDA do direito —
+   é o que mantém o cartão vermelho no eixo sem espremer os cônjuges */
+.lado:not(.pares){pointer-events:none}
 
-/* ── o cartão de cada pessoa ── */
+/* ── o cartão de cada pessoa ────────────────────────────────────────────────
+   LARGURA FIXA por geração, não min/max. Foi o que faltava no primeiro
+   desenho: com o cartão crescendo conforme o nome, cada fileira ficava com
+   uma borda serrilhada e o conjunto lia como coisa quebrada. Nome comprido
+   agora quebra em duas linhas dentro do mesmo retângulo. */
 .cartao{
-    display:flex;flex-direction:column;align-items:center;gap:.22rem;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25rem;
+    width:138px;height:118px;overflow:hidden;
     background:var(--creme);border:var(--b) solid var(--tinta);border-radius:var(--r-md);
-    box-shadow:var(--pop-baixa);padding:.5rem .55rem;min-width:96px;max-width:136px;
+    box-shadow:var(--pop-baixa);padding:.45rem .4rem;
     font-family:'Outfit',sans-serif;color:var(--tinta);cursor:pointer;
     transition:transform var(--tempo) var(--mola),box-shadow var(--tempo) ease;
 }
-.cartao:hover,.cartao:focus-visible{transform:translate(-2px,-2px);box-shadow:var(--pop);outline:none}
-.cartao-nome{font-weight:700;font-size:.78rem;line-height:1.18;text-align:center}
-.cartao-datas{font-size:.65rem;color:var(--musgo);font-weight:500}
-.cartao-foto{width:46px;height:46px;object-fit:cover;object-position:top;
+.cartao:hover,.cartao:focus-visible{transform:translate(-2px,-2px);box-shadow:var(--pop);outline:none;z-index:2}
+/* Nome com no máximo duas linhas. O nome inteiro fica no title e na ficha —
+   deixar o cartão crescer era o que desalinhava a fileira. */
+.cartao-nome{font-weight:700;font-size:.73rem;line-height:1.18;text-align:center;
+             display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;
+             overflow:hidden;overflow-wrap:anywhere}
+.cartao-datas{font-size:.64rem;color:var(--musgo);font-weight:500;white-space:nowrap}
+.cartao-foto{width:38px;height:38px;flex:none;object-fit:cover;object-position:top;
              border-radius:var(--r-full);border:var(--b) solid var(--tinta)}
-.cartao.grande{min-width:158px;max-width:210px;padding:.8rem .9rem;
+
+.cartao.grande{width:212px;height:146px;padding:.75rem;
                background:var(--vermelho);color:var(--creme);box-shadow:var(--pop)}
-.cartao.grande .cartao-nome{font-size:1rem}
+.cartao.grande .cartao-nome{font-size:.95rem;-webkit-line-clamp:4}
 .cartao.grande .cartao-datas{color:rgba(248,241,222,.85)}
-.cartao.grande .cartao-foto{width:62px;height:62px}
-.cartao.par{background:var(--papel)}
-.cartao.pequeno{min-width:78px;max-width:108px;padding:.35rem .4rem}
-.cartao.pequeno .cartao-nome{font-size:.68rem;line-height:1.1}
-.cartao.pequeno .cartao-datas{font-size:.6rem}
-.cartao.pequeno .cartao-foto{width:34px;height:34px}
+.cartao.grande .cartao-foto{width:52px;height:52px}
+.cartao.par{width:126px;height:104px;background:var(--papel)}
+.cartao.pequeno{width:120px;height:104px;padding:.35rem .28rem}
+.cartao.pequeno .cartao-nome{font-size:.66rem;line-height:1.14;-webkit-line-clamp:4}
+.cartao.pequeno .cartao-datas{font-size:.58rem}
+.cartao.pequeno .cartao-foto{width:30px;height:30px}
 .cartao.extra .cartao-nome::after{content:" \2726";color:var(--vermelho)}
 
-@media (max-width:560px){
-    .acima,.abaixo{gap:.35rem}
-    .cartao{min-width:84px;max-width:112px}
-    .cartao.pequeno{min-width:70px;max-width:92px}
+/* Lugar de quem a família ainda não sabe quem foi. Ele segura a fileira no
+   lugar — e, de quebra, mostra onde falta gente. Não clica. */
+.cartao.vago{
+    background:transparent;border-style:dashed;border-color:rgba(39,33,26,.3);
+    box-shadow:none;color:rgba(39,33,26,.3);font-size:1.1rem;font-weight:800;
+    cursor:default;pointer-events:none;
+}
+
+@media (max-width:640px){
+    .acima{gap:.3rem;padding-bottom:30px}
+    .abaixo{gap:.3rem;padding-top:30px}
+    .cartao{width:116px;height:110px;padding:.35rem .3rem}
+    .cartao-nome{font-size:.68rem}
+    .cartao.pequeno{width:100px;height:90px}
+    .cartao.pequeno .cartao-nome{font-size:.61rem}
+    .cartao.grande{width:178px;height:134px}
+    .cartao.par{width:106px;height:90px}
 }
 
 /* ── Ficha (modal) ───────────────────────────────────────────────────────── */

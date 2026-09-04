@@ -235,35 +235,61 @@ function cartao(id, tamanho) {
     </button>`;
 }
 
-/** Sobe: pais, avós, bisavós. Cada pessoa tem no máximo dois pais, então isto
- *  fecha certinho — é o formato de pedigree, e os traços batem de verdade. */
+/** Lugar de quem a família ainda não sabe quem foi. Não é enfeite: ele é o que
+ *  mantém as gerações alinhadas em fileiras — sem ele, um ramo que sobe menos
+ *  puxa os cartões vizinhos para alturas diferentes e o desenho vira sopa. */
+function vago(tamanho) {
+    return `<span class="cartao vago${tamanho ? ' ' + tamanho : ''}" aria-hidden="true">?</span>`;
+}
+
+/** Quantas gerações de verdade existem acima desta pessoa (até o teto). */
+function alturaAcima(id, teto) {
+    if (teto <= 0) return 0;
+    const pais = paisDe(id).filter(x => P[x]);
+    if (!pais.length) return 0;
+    return 1 + Math.max(...pais.map(x => alturaAcima(x, teto - 1)));
+}
+
+/** Um bloco de vagos, com a mesma forma que teria um ramo de verdade. */
+function ramoVago(falta, tamanho) {
+    if (falta <= 0) return '';
+    const um = `<div class="galho">${ramoVago(falta - 1, 'pequeno')}<div class="cartao-caixa">${vago(tamanho)}</div></div>`;
+    return `<div class="acima">${um}${um}</div>`;
+}
+
+/** Sobe: pais, avós, bisavós. Cada pessoa tem no máximo dois pais, então o
+ *  desenho é um pedigree — dois lugares por geração, sempre. Os que a família
+ *  não conhece entram como vago, e é isso que faz cada geração virar fileira. */
 function sobe(id, falta) {
     if (falta <= 0) return '';
     const pais = paisDe(id).filter(x => P[x]);
-    if (!pais.length) return '';
-    return `<div class="acima">` + pais.map(x =>
-        `<div class="galho">${sobe(x, falta - 1)}<div class="cartao-caixa">${cartao(x, falta === ACIMA ? '' : 'pequeno')}</div></div>`
+    const tam  = falta === ACIMA ? '' : 'pequeno';
+    const lados = [pais[0] || null, pais[1] || null];
+    return `<div class="acima">` + lados.map(x =>
+        `<div class="galho">` +
+            (x ? sobe(x, falta - 1) : ramoVago(falta - 1, 'pequeno')) +
+            `<div class="cartao-caixa">${x ? cartao(x, tam) : vago(tam)}</div>` +
+        `</div>`
     ).join('') + `</div>`;
 }
 
-/** Desce: filhos e netos, agrupados por união (a mãe/pai de cada leva aparece). */
-function desce(id, falta, vistos) {
+/** Desce: filhos e netos. TODOS os filhos numa fileira só, venham da união que
+ *  vierem — um bloco por união deixava dois irmãos em alturas diferentes, que é
+ *  exatamente o desalinho que faz o desenho parecer quebrado. Com quem cada um
+ *  foi tido está no cartão do cônjuge, ao lado, e na ficha de cada pessoa. */
+function desce(id, falta, vistos, primeiro) {
     if (falta <= 0) return '';
-    const fams = familiasDe(id).filter(([, f]) => f.filhos.length);
-    if (!fams.length) return '';
-    let blocos = '';
-    for (const [, f] of fams) {
-        const outro = f.pais.find(x => x !== id);
-        const filhos = f.filhos.filter(c => P[c] && !vistos.has(c));
-        if (!filhos.length) continue;
-        filhos.forEach(c => vistos.add(c));
-        if (outro && P[outro] && falta === ABAIXO)
-            blocos += `<div class="com-quem">com ${esc(P[outro].nome)}</div>`;
-        blocos += `<div class="abaixo">` + filhos.map(c =>
-            `<div class="galho"><div class="cartao-caixa">${cartao(c, falta === ABAIXO ? '' : 'pequeno')}</div>${desce(c, falta - 1, vistos)}</div>`
-        ).join('') + `</div>`;
-    }
-    return blocos;
+    const filhos = [];
+    for (const [, f] of familiasDe(id))
+        for (const c of f.filhos)
+            if (P[c] && !vistos.has(c) && !filhos.includes(c)) filhos.push(c);
+    if (!filhos.length) return '';
+    filhos.forEach(c => vistos.add(c));
+    // filho vem no tamanho normal; neto, no pequeno — e é `primeiro` que sabe
+    // disso, não a contagem, porque a fundura muda conforme o tamanho da prole
+    return `<div class="abaixo">` + filhos.map(c =>
+        `<div class="galho"><div class="cartao-caixa">${cartao(c, primeiro ? '' : 'pequeno')}</div>${desce(c, falta - 1, vistos, false)}</div>`
+    ).join('') + `</div>`;
 }
 
 function desenhaArvore() {
@@ -278,21 +304,40 @@ function desenhaArvore() {
         if (outro && P[outro] && !pares.includes(outro)) pares.push(outro);
     }
 
+    // sobe só até onde há gente de verdade: assim ninguém leva uma parede de
+    // interrogações por ter chegado ao fim do que a família sabe
+    const altura = alturaAcima(raizAtual, ACIMA);
+
+    // Prole grande: mostra só os filhos. O Batuta teve 9, e com os 27 netos a
+    // árvore passava de 3.500px — ninguém lê isso, e o que se perde é pouco:
+    // clicar num filho põe ELE no meio e os netos aparecem ali.
+    let filhosDiretos = 0;
+    for (const [, f] of familiasDe(raizAtual)) filhosDiretos += f.filhos.filter(c => P[c]).length;
+    const fundura = filhosDiretos > 6 ? 1 : ABAIXO;
+
     alvo.innerHTML =
         `<div class="arv">
-            ${sobe(raizAtual, ACIMA)}
+            ${sobe(raizAtual, altura)}
             <div class="centro">
+                <div class="lado"></div>
                 ${cartao(raizAtual, 'grande')}
-                ${pares.length ? `<div class="pares">${pares.map(x => cartao(x, 'par')).join('')}</div>` : ''}
+                <div class="lado pares">${pares.map(x => cartao(x, 'par')).join('')}</div>
             </div>
-            ${desce(raizAtual, ABAIXO, new Set([raizAtual]))}
+            ${desce(raizAtual, fundura, new Set([raizAtual]), true)}
         </div>`;
 
-    const acima = alvo.querySelectorAll('.acima .cartao').length;
-    const abaixo = alvo.querySelectorAll('.abaixo .cartao').length;
+    const acima = alvo.querySelectorAll('.acima .cartao:not(.vago)').length;
+    const abaixo = alvo.querySelectorAll('.abaixo .cartao:not(.vago)').length;
     document.getElementById('raiz-rotulo').textContent =
         p.nome + ' no meio · ' + acima + ' antes · ' + abaixo + ' depois';
     document.getElementById('raiz-reset').style.display = raizAtual === RAIZ_PADRAO ? 'none' : 'inline';
+
+    // O cônjuge só existe à direita, então o cartão vermelho escorregaria para
+    // a esquerda e a haste dos pais cairia no vão entre os dois. Dando ao lado
+    // esquerdo, vazio, a MEDIDA do direito, o cartão volta para o eixo.
+    const dir = alvo.querySelector('.centro .pares');
+    const esq = alvo.querySelector('.centro .lado:not(.pares)');
+    if (dir && esq) esq.style.width = dir.getBoundingClientRect().width + 'px';
 
     // No telefone a árvore é mais larga que a tela e a caixa rola de lado. Sem
     // isto ela abre encostada na esquerda, mostrando um bisavô — e quem chegou
