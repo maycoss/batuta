@@ -107,5 +107,74 @@
         Se voc&ecirc; aparece aqui e n&atilde;o quer aparecer, <a href="mailto:maycoss@gmail.com?subject=Fam%C3%ADlia%20Batuta%20%E2%80%94%20pedido%20de%20retirada">pe&ccedil;a a retirada</a>.</p>
     </div>
 </footer>
+
+<!--
+  Painel de contato. Ele existe porque link "mailto:" NÃO abre nada para quem
+  usa webmail — a maioria das pessoas. O botão continua sendo o mesmo link
+  (quem tiver programa de e-mail e JavaScript desligado abre direto), mas o
+  clique é interceptado e vira esta escolha: WhatsApp, endereço para copiar,
+  ou o programa de e-mail para quem tem.
+-->
+<div class="ficha-fundo" id="fale-fundo" role="dialog" aria-modal="true" aria-label="Falar com a fam&iacute;lia">
+  <div class="ficha">
+    <h3>Falar com a fam&iacute;lia</h3>
+    <p class="rot" id="fale-assunto"></p>
+    <p class="sub" style="margin:.6rem 0 1rem">Escolha por onde prefere. O WhatsApp &eacute; o mais r&aacute;pido.</p>
+    <p style="display:flex;flex-wrap:wrap;gap:.5rem">
+        <a class="bt bt-verde" id="fale-zap" href="https://wa.me/5595991445588" target="_blank" rel="noopener">WhatsApp</a>
+        <a class="bt bt-fantasma" id="fale-mailto" href="mailto:maycoss@gmail.com">Abrir meu e-mail</a>
+    </p>
+    <p class="rot" style="margin-top:1.1rem">Ou copie o endere&ccedil;o</p>
+    <p style="display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:.3rem">
+        <span class="fale-endereco" id="fale-endereco">maycoss@gmail.com</span>
+        <button type="button" class="bt bt-fantasma" id="fale-copiar">Copiar</button>
+    </p>
+    <p style="margin-top:1.3rem"><button type="button" class="bt bt-fantasma" id="fale-fechar">Fechar</button></p>
+  </div>
+</div>
+<script>
+(function () {
+    var fundo = document.getElementById('fale-fundo');
+    if (!fundo) return;
+    var zap = document.getElementById('fale-zap');
+    var mail = document.getElementById('fale-mailto');
+    var assuntoEl = document.getElementById('fale-assunto');
+    var endereco = document.getElementById('fale-endereco').textContent.trim();
+    var base = zap.getAttribute('href');
+
+    document.addEventListener('click', function (ev) {
+        var a = ev.target.closest ? ev.target.closest('a[href^="mailto:"]') : null;
+        if (!a || a.id === 'fale-mailto') return;
+        ev.preventDefault();
+        var href = a.getAttribute('href');
+        var m = href.match(/[?&]subject=([^&]*)/);
+        var assunto = m ? decodeURIComponent(m[1].replace(/\+/g, ' ')) : 'Família Batuta';
+        assuntoEl.textContent = assunto;
+        zap.href  = base + '?text=' + encodeURIComponent(assunto);
+        mail.href = href;
+        fundo.classList.add('aberta');
+    });
+
+    function fecha() { fundo.classList.remove('aberta'); }
+    document.getElementById('fale-fechar').addEventListener('click', fecha);
+    fundo.addEventListener('click', function (ev) { if (ev.target === fundo) fecha(); });
+    document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') fecha(); });
+
+    document.getElementById('fale-copiar').addEventListener('click', function () {
+        var bt = this;
+        var pronto = function () { bt.textContent = 'Copiado!'; setTimeout(function () { bt.textContent = 'Copiar'; }, 1800); };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(endereco).then(pronto, pronto);
+        } else {
+            // navegador antigo, ou página servida sem https: seleciona para o
+            // visitante copiar na mão, que é melhor do que um botão que falha calado
+            var r = document.createRange();
+            r.selectNodeContents(document.getElementById('fale-endereco'));
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            pronto();
+        }
+    });
+})();
+</script>
 </body>
 </html>

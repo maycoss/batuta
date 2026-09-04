@@ -663,3 +663,10 @@ footer small{color:rgba(248,241,222,.85);font-size:.82rem}
     .legenda-arvore{color:#000}
     a[href]::after{content:""}
 }
+
+/* endereço de e-mail para copiar, dentro do painel de contato */
+.fale-endereco{
+    font-family:'Outfit',sans-serif;font-weight:700;font-size:.95rem;
+    background:var(--branco);border:var(--b) solid var(--tinta);border-radius:var(--r-sm);
+    padding:.45rem .7rem;user-select:all;
+}
