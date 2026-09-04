@@ -297,11 +297,20 @@ function desenhaArvore() {
     const p = P[raizAtual];
     if (!p) { alvo.innerHTML = '<p>Pessoa não encontrada.</p>'; return; }
 
-    // o cônjuge fica ao lado, não acima nem abaixo: ele não é geração
-    const pares = [];
+    // Cada união é uma COLUNA: o cônjuge fica na mesma fileira da pessoa (não é
+    // outra geração) e os filhos daquela união descem DELE. Juntar todo mundo
+    // numa fileira só, como estava antes, dizia que os filhos vinham todos do
+    // mesmo lugar — e nesta árvore 18 pessoas têm duas ou mais uniões com
+    // filhos; o pai do Mayco tem cinco.
+    const vistos = new Set([raizAtual]);
+    const unioes = [];      // {par, filhos} — uma por união
+    const semPar = [];      // filhos sem o outro pai registrado
     for (const [, f] of familiasDe(raizAtual)) {
-        const outro = f.pais.find(x => x !== raizAtual);
-        if (outro && P[outro] && !pares.includes(outro)) pares.push(outro);
+        const outro  = f.pais.find(x => x !== raizAtual);
+        const filhos = f.filhos.filter(c => P[c] && !vistos.has(c));
+        filhos.forEach(c => vistos.add(c));
+        if (outro && P[outro]) unioes.push({ par: outro, filhos });
+        else semPar.push(...filhos);
     }
 
     // sobe só até onde há gente de verdade: assim ninguém leva uma parede de
@@ -311,19 +320,25 @@ function desenhaArvore() {
     // Prole grande: mostra só os filhos. O Batuta teve 9, e com os 27 netos a
     // árvore passava de 3.500px — ninguém lê isso, e o que se perde é pouco:
     // clicar num filho põe ELE no meio e os netos aparecem ali.
-    let filhosDiretos = 0;
-    for (const [, f] of familiasDe(raizAtual)) filhosDiretos += f.filhos.filter(c => P[c]).length;
+    const filhosDiretos = semPar.length + unioes.reduce((n, u) => n + u.filhos.length, 0);
     const fundura = filhosDiretos > 6 ? 1 : ABAIXO;
+
+    /** uma coluna: um cartão em cima e, pendurados nele, os filhos daquela união */
+    const coluna = (topo, filhos, classe) =>
+        `<div class="col${classe ? ' ' + classe : ''}">
+            <div class="cartao-caixa">${topo}</div>
+            ${filhos.length ? `<div class="abaixo">` + filhos.map(c =>
+                `<div class="galho"><div class="cartao-caixa">${cartao(c, '')}</div>` +
+                `${desce(c, fundura - 1, vistos, false)}</div>`).join('') + `</div>` : ''}
+        </div>`;
 
     alvo.innerHTML =
         `<div class="arv">
             ${sobe(raizAtual, altura)}
-            <div class="centro">
-                <div class="lado"></div>
-                ${cartao(raizAtual, 'grande')}
-                <div class="lado pares">${pares.map(x => cartao(x, 'par')).join('')}</div>
+            <div class="familia">
+                ${coluna(cartao(raizAtual, 'grande'), semPar, 'col-eu')}
+                ${unioes.map(u => coluna(cartao(u.par, 'par'), u.filhos)).join('')}
             </div>
-            ${desce(raizAtual, fundura, new Set([raizAtual]), true)}
         </div>`;
 
     const acima = alvo.querySelectorAll('.acima .cartao:not(.vago)').length;
@@ -332,12 +347,20 @@ function desenhaArvore() {
         p.nome + ' no meio · ' + acima + ' antes · ' + abaixo + ' depois';
     document.getElementById('raiz-reset').style.display = raizAtual === RAIZ_PADRAO ? 'none' : 'inline';
 
-    // O cônjuge só existe à direita, então o cartão vermelho escorregaria para
-    // a esquerda e a haste dos pais cairia no vão entre os dois. Dando ao lado
-    // esquerdo, vazio, a MEDIDA do direito, o cartão volta para o eixo.
-    const dir = alvo.querySelector('.centro .pares');
-    const esq = alvo.querySelector('.centro .lado:not(.pares)');
-    if (dir && esq) esq.style.width = dir.getBoundingClientRect().width + 'px';
+    // Os cônjuges ficam todos à direita, então o cartão da pessoa escorrega para
+    // a esquerda e a haste dos pais cairia fora dele. Quem se desloca é o
+    // PEDIGREE, não a família: encher a esquerda da linha da família custava o
+    // dobro do desvio em largura, e a árvore do Marcos, que tem cinco uniões,
+    // ia a 2.520px de espaço vazio. Numa caixa centrada, dar margem de um lado
+    // empurra o conteúdo para o outro — daí o dobro do desvio.
+    const ped = alvo.querySelector('.arv > .acima');
+    const meu = alvo.querySelector('.cartao.grande');
+    if (ped && meu) {
+        const p2 = ped.getBoundingClientRect(), m = meu.getBoundingClientRect();
+        const d = Math.round((p2.left + p2.width / 2) - (m.left + m.width / 2));
+        if (d > 0)      ped.style.marginRight = (d * 2) + 'px';
+        else if (d < 0) ped.style.marginLeft  = (-d * 2) + 'px';
+    }
 
     // No telefone a árvore é mais larga que a tela e a caixa rola de lado. Sem
     // isto ela abre encostada na esquerda, mostrando um bisavô — e quem chegou
@@ -388,7 +411,7 @@ function abreFicha(id) {
                  p&aacute;gina, nem em buscadores.</div>`;
     }
     html += `<div class="acoes-ficha">
-        <a class="bt bt-verde" href="${urlDe(id)}">P&aacute;gina dela</a>
+        <a class="bt bt-verde" href="${urlDe(id)}">${p.sexo === 'F' ? 'P&aacute;gina dela' : p.sexo === 'M' ? 'P&aacute;gina dele' : 'Abrir a p&aacute;gina'}</a>
         <button type="button" class="bt bt-fantasma" data-acao="raiz" data-id="${id}">P&ocirc;r no meio da &aacute;rvore</button>
         ${TUDO ? `<button type="button" class="bt bt-fantasma" data-acao="add" data-id="${id}">Adicionar parente</button>` : ''}
         <button type="button" class="bt bt-fantasma" data-acao="fechar">Fechar</button>

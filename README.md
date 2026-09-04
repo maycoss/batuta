@@ -10,10 +10,11 @@ Páginas prontas, sem programa nenhum rodando: a home com a árvore, o índice d
 nomes e uma ficha para cada uma das 407 pessoas.
 
 A árvore é um diagrama centrado numa pessoa: quem veio antes sobe (até três
-gerações, no formato de pedigree), quem veio depois desce, e o cônjuge fica ao
-lado — cônjuge não é geração. Clicar em qualquer cartão põe aquela pessoa no
-meio, e é assim que se anda pelas 407 sem precisar de uma tela do tamanho da
-parede.
+gerações, no formato de pedigree) e quem veio depois desce. O cônjuge fica na
+MESMA fileira, ligado por uma barra de união — cônjuge não é geração —, e os
+filhos de cada união descem de quem os teve. Clicar em qualquer cartão põe
+aquela pessoa no meio, e é assim que se anda pelas 407 sem precisar de uma tela
+do tamanho da parede.
 
 ## Privacidade
 

@@ -247,11 +247,20 @@ h2.sem-rabisco::after{display:none}
    cônjuge só ao lado direito, o cartão escorregava para a esquerda e a linha
    caía no vão entre os dois. Os dois `.lado` com flex igual resolvem: o vazio
    da esquerda pesa o mesmo que os cônjuges da direita. */
-.centro{display:flex;justify-content:center;align-items:center;gap:.7rem;padding:2px 0}
-.lado{flex:none;display:flex;gap:.45rem;align-items:center}
-/* o lado esquerdo é vazio e recebe, por JavaScript, a MEDIDA do direito —
-   é o que mantém o cartão vermelho no eixo sem espremer os cônjuges */
-.lado:not(.pares){pointer-events:none}
+/* A pessoa e os cônjuges ficam na MESMA fileira — cônjuge não é geração —,
+   ligados por uma barra de união. Cada um vira uma coluna, e os filhos daquela
+   união descem de quem os teve. Sem isso, todos os filhos saíam de um rail só,
+   como se viessem da mesma mãe. */
+.familia{display:flex;justify-content:center;align-items:flex-start;gap:2.4rem;padding:2px 0}
+.col{display:flex;flex-direction:column;align-items:center;position:relative}
+/* a barra que atravessa o vão até o cartão seguinte. Fica na altura do meio do
+   cartão de cônjuge, que é o mais baixo — assim ela entra nos dois. */
+.col:not(:last-child)::after{
+    content:"";position:absolute;top:52px;right:calc(-2.4rem - 1px);width:calc(2.4rem + 2px);
+    border-top:var(--b) solid var(--tinta);
+}
+/* o primeiro filho de cada união pendura no cartão de cima da coluna */
+.col > .abaixo{align-self:stretch}
 
 /* ── o cartão de cada pessoa ────────────────────────────────────────────────
    LARGURA FIXA por geração, não min/max. Foi o que faltava no primeiro
@@ -299,6 +308,8 @@ h2.sem-rabisco::after{display:none}
 @media (max-width:640px){
     .acima{gap:.3rem;padding-bottom:30px}
     .abaixo{gap:.3rem;padding-top:30px}
+    .familia{gap:1.5rem}
+    .col:not(:last-child)::after{top:45px;right:calc(-1.5rem - 1px);width:calc(1.5rem + 2px)}
     .cartao{width:116px;height:110px;padding:.35rem .3rem}
     .cartao-nome{font-size:.68rem}
     .cartao.pequeno{width:100px;height:90px}
