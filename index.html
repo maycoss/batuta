@@ -100,8 +100,20 @@
                 <span class="arvore-raiz" id="raiz-rotulo"></span>
                 <a href="#" id="raiz-reset" style="display:none">voltar pro come&ccedil;o</a>
             </div>
-            <div class="arvore" id="arvore-render"></div>
+            <div class="arvore-com-regua">
+                <div class="regua" id="regua" aria-hidden="true"></div>
+                <div class="arvore-rolagem" id="arvore-rolagem">
+                    <div class="arvore" id="arvore-render"></div>
+                </div>
+            </div>
         </div>
+        <p class="legenda-arvore">
+            <span><i class="am masc"></i> homem</span>
+            <span><i class="am fem"></i> mulher</span>
+            <span><i class="am vago"></i> a fam&iacute;lia ainda n&atilde;o sabe quem foi</span>
+            <span><span style="color:var(--vermelho)">&#10022;</span> acrescentado pela fam&iacute;lia aqui no site</span>
+            <span>&#8224; falecimento</span>
+        </p>
 
                 <div class="convite" style="margin-top:1.3rem">
             <p><strong>Quer completar a &aacute;rvore?</strong> Se falta gente aqui, se algum nome est&aacute; errado, ou se voc&ecirc; tem <strong>foto de quem
@@ -227,6 +239,7 @@ function cartao(id, tamanho) {
     if (!p) return '';
     const v = vida(p);
     const cls = 'cartao' + (tamanho ? ' ' + tamanho : '')
+              + (p.sexo === 'M' ? ' masc' : p.sexo === 'F' ? ' fem' : '')
               + (p.extra ? ' extra' : '') + (p.reservado ? ' vivo' : '');
     const foto = p.foto ? `<img class="cartao-foto" src="/batuta/fotos/${esc(p.foto)}" alt="" loading="lazy">` : '';
     return `<button type="button" class="${cls}" data-id="${id}" title="${esc(p.nome)}">
@@ -251,23 +264,26 @@ function alturaAcima(id, teto) {
 }
 
 /** Um bloco de vagos, com a mesma forma que teria um ramo de verdade. */
-function ramoVago(falta, tamanho) {
+function ramoVago(falta, nivel) {
     if (falta <= 0) return '';
-    const um = `<div class="galho">${ramoVago(falta - 1, 'pequeno')}<div class="cartao-caixa">${vago(tamanho)}</div></div>`;
-    return `<div class="acima">${um}${um}</div>`;
+    const um = `<div class="galho">${ramoVago(falta - 1, nivel + 1)}` +
+               `<div class="cartao-caixa">${vago('pequeno')}</div></div>`;
+    return `<div class="acima" data-ger="a${nivel}">${um}${um}</div>`;
 }
 
 /** Sobe: pais, avós, bisavós. Cada pessoa tem no máximo dois pais, então o
  *  desenho é um pedigree — dois lugares por geração, sempre. Os que a família
- *  não conhece entram como vago, e é isso que faz cada geração virar fileira. */
-function sobe(id, falta) {
+ *  não conhece entram como vago, e é isso que faz cada geração virar fileira.
+ *  O `nivel` (1 = pais, 2 = avós, 3 = bisavós) manda no tamanho do cartão e é
+ *  o que a régua da esquerda lê para nomear cada fileira. */
+function sobe(id, falta, nivel) {
     if (falta <= 0) return '';
     const pais = paisDe(id).filter(x => P[x]);
-    const tam  = falta === ACIMA ? '' : 'pequeno';
+    const tam  = nivel === 1 ? '' : 'pequeno';
     const lados = [pais[0] || null, pais[1] || null];
-    return `<div class="acima">` + lados.map(x =>
+    return `<div class="acima" data-ger="a${nivel}">` + lados.map(x =>
         `<div class="galho">` +
-            (x ? sobe(x, falta - 1) : ramoVago(falta - 1, 'pequeno')) +
+            (x ? sobe(x, falta - 1, nivel + 1) : ramoVago(falta - 1, nivel + 1)) +
             `<div class="cartao-caixa">${x ? cartao(x, tam) : vago(tam)}</div>` +
         `</div>`
     ).join('') + `</div>`;
@@ -277,7 +293,7 @@ function sobe(id, falta) {
  *  vierem — um bloco por união deixava dois irmãos em alturas diferentes, que é
  *  exatamente o desalinho que faz o desenho parecer quebrado. Com quem cada um
  *  foi tido está no cartão do cônjuge, ao lado, e na ficha de cada pessoa. */
-function desce(id, falta, vistos, primeiro) {
+function desce(id, falta, vistos, primeiro, nivel) {
     if (falta <= 0) return '';
     const filhos = [];
     for (const [, f] of familiasDe(id))
@@ -287,8 +303,8 @@ function desce(id, falta, vistos, primeiro) {
     filhos.forEach(c => vistos.add(c));
     // filho vem no tamanho normal; neto, no pequeno — e é `primeiro` que sabe
     // disso, não a contagem, porque a fundura muda conforme o tamanho da prole
-    return `<div class="abaixo">` + filhos.map(c =>
-        `<div class="galho"><div class="cartao-caixa">${cartao(c, primeiro ? '' : 'pequeno')}</div>${desce(c, falta - 1, vistos, false)}</div>`
+    return `<div class="abaixo" data-ger="d${nivel}">` + filhos.map(c =>
+        `<div class="galho"><div class="cartao-caixa">${cartao(c, primeiro ? '' : 'pequeno')}</div>${desce(c, falta - 1, vistos, false, nivel + 1)}</div>`
     ).join('') + `</div>`;
 }
 
@@ -327,17 +343,24 @@ function desenhaArvore() {
     const coluna = (topo, filhos, classe) =>
         `<div class="col${classe ? ' ' + classe : ''}">
             <div class="cartao-caixa">${topo}</div>
-            ${filhos.length ? `<div class="abaixo">` + filhos.map(c =>
+            ${filhos.length ? `<div class="abaixo" data-ger="d1">` + filhos.map(c =>
                 `<div class="galho"><div class="cartao-caixa">${cartao(c, '')}</div>` +
-                `${desce(c, fundura - 1, vistos, false)}</div>`).join('') + `</div>` : ''}
+                `${desce(c, fundura - 1, vistos, false, 2)}</div>`).join('') + `</div>` : ''}
         </div>`;
+
+    // As uniões ficam metade de cada lado, na ordem: união 1 à esquerda, a
+    // pessoa, união 2 à direita. Com todas à direita, o cartão da pessoa
+    // encostava na ponta e o pedigree precisava de uma margem enorme para
+    // descer em cima dele — 352px de vazio só para alinhar.
+    const meio = Math.floor(unioes.length / 2);
 
     alvo.innerHTML =
         `<div class="arv">
-            ${sobe(raizAtual, altura)}
-            <div class="familia">
+            ${sobe(raizAtual, altura, 1)}
+            <div class="familia" data-ger="eu">
+                ${unioes.slice(0, meio).map(u => coluna(cartao(u.par, 'par'), u.filhos)).join('')}
                 ${coluna(cartao(raizAtual, 'grande'), semPar, 'col-eu')}
-                ${unioes.map(u => coluna(cartao(u.par, 'par'), u.filhos)).join('')}
+                ${unioes.slice(meio).map(u => coluna(cartao(u.par, 'par'), u.filhos)).join('')}
             </div>
         </div>`;
 
@@ -362,14 +385,39 @@ function desenhaArvore() {
         else if (d < 0) ped.style.marginLeft  = (-d * 2) + 'px';
     }
 
+    // A régua da esquerda: dá nome a cada fileira, e é o que faz o desenho ser
+    // lido como árvore genealógica e não como um monte de caixa ligada. Os
+    // nomes são RELATIVOS a quem está no meio — os bisavós de um são os pais de
+    // outro —, por isso ela é remontada a cada redesenho.
+    const regua = document.getElementById('regua');
+    if (regua) {
+        const nomes = { a3: 'bisavós', a2: 'avós', a1: 'pais',
+                        eu: (p.nome.split(' ')[0] || '').toLowerCase(),
+                        d1: 'filhos', d2: 'netos' };
+        const base = regua.getBoundingClientRect();
+        let html = '';
+        for (const ger of ['a3', 'a2', 'a1', 'eu', 'd1', 'd2']) {
+            const bloco = alvo.querySelector(`[data-ger="${ger}"]`);
+            if (!bloco) continue;
+            const cartaoDaFileira = ger === 'eu'
+                ? bloco.querySelector('.cartao.grande')
+                : bloco.querySelector(':scope > .galho > .cartao-caixa > .cartao');
+            if (!cartaoDaFileira) continue;
+            const r = cartaoDaFileira.getBoundingClientRect();
+            const y = Math.round(r.top - base.top + r.height / 2);
+            html += `<span class="regua-item" style="top:${y}px">${esc(nomes[ger])}</span>`;
+        }
+        regua.innerHTML = html;
+    }
+
     // No telefone a árvore é mais larga que a tela e a caixa rola de lado. Sem
     // isto ela abre encostada na esquerda, mostrando um bisavô — e quem chegou
     // não vê a pessoa do meio, que é o ponto do desenho.
-    const caixa = alvo.closest('.arvore-caixa');
-    const eu    = alvo.querySelector('.cartao.grande');
-    if (caixa && eu && caixa.scrollWidth > caixa.clientWidth) {
-        const c = caixa.getBoundingClientRect(), e = eu.getBoundingClientRect();
-        caixa.scrollLeft += (e.left + e.width / 2) - (c.left + caixa.clientWidth / 2);
+    const rol = document.getElementById('arvore-rolagem');
+    const eu  = alvo.querySelector('.cartao.grande');
+    if (rol && eu && rol.scrollWidth > rol.clientWidth) {
+        const c = rol.getBoundingClientRect(), e = eu.getBoundingClientRect();
+        rol.scrollLeft += (e.left + e.width / 2) - (c.left + rol.clientWidth / 2);
     }
 }
 document.getElementById('raiz-reset').addEventListener('click', ev => {

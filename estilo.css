@@ -196,8 +196,27 @@ h2.sem-rabisco::after{display:none}
 /* ── Árvore ──────────────────────────────────────────────────────────────── */
 .arvore-caixa{
     background:var(--creme);border:var(--b) solid var(--tinta);border-radius:var(--r-lg);
-    box-shadow:var(--pop-suave);padding:1.2rem 1.2rem 1.2rem .6rem;overflow-x:auto;position:relative;z-index:1;
+    box-shadow:var(--pop-suave);padding:1.2rem 1.2rem 1.2rem .6rem;position:relative;z-index:1;
 }
+/* Quem rola de lado é a faixa da árvore, não a caixa: assim a régua de
+   gerações fica parada na esquerda enquanto o desenho passa por baixo dela. */
+.arvore-com-regua{display:flex;align-items:flex-start;gap:.4rem}
+.arvore-rolagem{flex:1;min-width:0;overflow-x:auto;overflow-y:hidden}
+.regua{position:relative;flex:none;width:74px;align-self:stretch}
+.regua-item{
+    position:absolute;right:0;transform:translateY(-50%);text-align:right;width:100%;
+    font-family:'Outfit',sans-serif;font-weight:700;text-transform:uppercase;
+    letter-spacing:.09em;font-size:.6rem;color:var(--verde);line-height:1.1;
+}
+.legenda-arvore{
+    display:flex;flex-wrap:wrap;gap:.35rem 1.1rem;margin:.7rem 0 0 .2rem;
+    font-family:'Outfit',sans-serif;font-size:.72rem;color:var(--musgo);
+}
+.legenda-arvore span{display:inline-flex;align-items:center;gap:.35rem}
+.am{width:14px;height:14px;border-radius:4px;border:var(--b) solid var(--tinta);display:inline-block}
+.am.masc{background:var(--verde)}
+.am.fem{background:var(--azul)}
+.am.vago{background:transparent;border-style:dashed;border-color:rgba(39,33,26,.35)}
 .arvore-topo{display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap;padding:0 0 .8rem .6rem}
 .arvore-raiz{font-family:'Outfit',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;color:var(--verde)}
 .arvore-topo a{font-size:.85rem}
@@ -212,7 +231,10 @@ h2.sem-rabisco::after{display:none}
 .acima{display:flex;justify-content:center;align-items:flex-end;gap:.5rem;
        position:relative;padding-bottom:36px}
 .acima::after{content:"";position:absolute;bottom:0;left:50%;height:18px;border-left:var(--b) solid var(--tinta)}
-.acima > .galho{position:relative;padding-bottom:18px}
+/* O respiro lateral de cada galho SOMA a cada geração: o casal fica junto e os
+   ramos vizinhos se afastam. Sem isso, os 8 bisavós saíam igualmente espaçados
+   e não dava para ver quem era casado com quem. */
+.acima > .galho{position:relative;padding:0 .16rem 18px}
 .acima > .galho::before,
 .acima > .galho::after{content:"";position:absolute;bottom:0;right:50%;width:50%;height:18px;
                        border-bottom:var(--b) solid var(--tinta)}
@@ -297,6 +319,27 @@ h2.sem-rabisco::after{display:none}
 .cartao.pequeno .cartao-foto{width:30px;height:30px}
 .cartao.extra .cartao-nome::after{content:" \2726";color:var(--vermelho)}
 
+/* Homem e mulher, sóbrio: uma tira no alto do cartão, na cor da casa. Sem
+   rosa e azul de chá de bebê, e sem depender só da cor — a legenda embaixo
+   diz qual é qual, e o nome já costuma dizer. */
+.cartao.masc::before,.cartao.fem::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:5px;
+}
+.cartao.masc::before{background:var(--verde)}
+.cartao.fem::before {background:var(--azul)}
+.cartao.grande::before{height:7px}
+
+/* Casamento também lá em cima: a barra que une o casal de cada geração. Antes
+   só o casal do meio tinha, e os de cima apareciam lado a lado sem nada
+   dizendo que eram casados. */
+.acima > .galho:first-child > .cartao-caixa{position:relative}
+.acima > .galho:first-child > .cartao-caixa::after{
+    content:"";position:absolute;top:50%;left:100%;
+    width:calc(.5rem + .32rem);  /* o vão: gap da fileira + o respiro dos dois galhos */
+    border-top:var(--b) solid var(--tinta);
+}
+.acima > .galho:first-child:has(.vago) > .cartao-caixa::after{display:none}
+
 /* Lugar de quem a família ainda não sabe quem foi. Ele segura a fileira no
    lugar — e, de quebra, mostra onde falta gente. Não clica. */
 .cartao.vago{
@@ -310,6 +353,9 @@ h2.sem-rabisco::after{display:none}
     .abaixo{gap:.3rem;padding-top:30px}
     .familia{gap:1.5rem}
     .col:not(:last-child)::after{top:45px;right:calc(-1.5rem - 1px);width:calc(1.5rem + 2px)}
+    /* 74px de régua num telefone de 375 é um terço da tela: some, e a legenda
+       embaixo continua explicando o desenho */
+    .regua{display:none}
     .cartao{width:116px;height:110px;padding:.35rem .3rem}
     .cartao-nome{font-size:.68rem}
     .cartao.pequeno{width:100px;height:90px}
@@ -591,4 +637,29 @@ footer small{color:rgba(248,241,222,.85);font-size:.82rem}
     float:right;width:96px;height:auto;margin:0 0 .6rem .8rem;
     border:var(--b) solid var(--tinta);border-radius:var(--r-sm);
     box-shadow:var(--pop-baixa);background:var(--creme);transform:rotate(1.5deg);
+}
+
+/* ── Impressão ───────────────────────────────────────────────────────────────
+   A árvore é a única coisa que vale imprimir. Sai o resto, e a caixa deixa de
+   rolar de lado — no papel não há rolagem: ou cabe, ou fica de fora. */
+@media print{
+    @page{size:A3 landscape;margin:12mm}
+    .barra-conta,.trio-secao,.marquise,.busca-caixa,.dobra,footer,
+    .convite,#mural,#historias,.batuta-divisor,.pula,.confete,
+    .arvore-topo a,.rodape-links{display:none!important}
+    body{background:#fff;background-image:none;color:#000}
+    .miolo{max-width:none;padding:0}
+    .verbete{padding:0 0 .6rem}
+    h1{font-size:2.2rem;text-shadow:none}
+    .fonetica,.definicoes{display:none}
+    .arvore-caixa{border:1px solid #000;box-shadow:none;background:#fff;padding:.6rem;border-radius:8px}
+    .arvore-rolagem{overflow:visible!important}
+    .arv{min-width:0}
+    .cartao{box-shadow:none;border-width:1px;background:#fff;break-inside:avoid}
+    .cartao.grande{background:#fff;color:#000;border-width:2px}
+    .cartao.grande .cartao-datas{color:#444}
+    .cartao.par{background:#fff}
+    .regua{display:block}
+    .legenda-arvore{color:#000}
+    a[href]::after{content:""}
 }
