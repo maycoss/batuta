@@ -872,3 +872,74 @@ footer .lema{font-size:1.5rem;color:var(--mostarda)}
     .arvore-caixa{outline:0}
     .cartao.grande{outline:0;box-shadow:none}
 }
+
+/* ===========================================================================
+   Árvore como página de álbum antigo (17/10/2026 — escolha dele, opção "A")
+   ---------------------------------------------------------------------------
+   Folha escura de álbum, cada pessoa é um retratinho de papel preso por
+   cantoneiras, e os traços da família são fio dourado. O truque das linhas:
+   todos os traços da árvore usam var(--tinta), então a --tinta vira dourado
+   dentro de .arv e volta a ser sépia dentro de cada cartão. Só cor e enfeite —
+   largura e altura dos cartões continuam as de antes.
+   =========================================================================== */
+.arvore-caixa{
+    --folha:#221A14;--ouro:#C9A45C;
+    background-color:var(--folha);
+    background-image:
+        radial-gradient(ellipse at 50% 40%,rgba(255,235,190,.06),transparent 70%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .9 0 0 0 0 .7 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+    outline:1px solid rgba(201,164,92,.45);outline-offset:-9px;
+    box-shadow:8px 8px 0 var(--mostarda),8px 8px 0 2px var(--tinta);
+}
+.arvore-raiz{color:var(--ouro)}
+.arvore-topo a{color:#E8C98A}
+.regua-item{color:rgba(232,201,138,.8);font-family:'Special Elite','Courier New',monospace;font-weight:400;letter-spacing:.06em}
+.arvore-rolagem{scrollbar-color:rgba(201,164,92,.5) transparent}
+
+/* fio dourado em todos os traços */
+.arv{--tinta:#C9A45C}
+.arv .cartao{--tinta:#3A2A1F;position:relative}
+
+/* o retratinho: papel creme com margem branca e as quatro cantoneiras */
+.arv .cartao{
+    --canto:#14100C;
+    border:2px solid #FBF6E8;border-radius:2px;
+    background-color:#F2E6CB;
+    background-image:
+        linear-gradient(135deg,var(--canto) 0 50%,transparent 50%),
+        linear-gradient(225deg,var(--canto) 0 50%,transparent 50%),
+        linear-gradient(45deg, var(--canto) 0 50%,transparent 50%),
+        linear-gradient(315deg,var(--canto) 0 50%,transparent 50%);
+    background-size:15px 15px;background-repeat:no-repeat;
+    background-position:top left,top right,bottom left,bottom right;
+    box-shadow:0 3px 7px rgba(0,0,0,.55);
+}
+.arv .cartao:hover,.arv .cartao:focus-visible{transform:translateY(-3px);box-shadow:0 8px 14px rgba(0,0,0,.6)}
+.arv .cartao.par{background-color:#E8D7B0}
+.arv .cartao.grande{
+    background-color:var(--vermelho);color:var(--creme);
+    border-color:#E8C98A;outline:1px solid rgba(232,201,138,.6);outline-offset:-7px;
+    box-shadow:0 4px 12px rgba(0,0,0,.6),0 0 0 3px rgba(201,164,92,.35);
+}
+.arv .cartao-foto{border-color:#FBF6E8;box-shadow:0 1px 3px rgba(0,0,0,.4)}
+
+/* homem e mulher: a tira sai do alto (lá ficam as cantoneiras) e vira um fio
+   embaixo do nome, entre as cantoneiras de baixo */
+.arv .cartao.masc::before,.arv .cartao.fem::before{
+    top:auto;bottom:5px;left:18px;right:18px;height:3px;border-radius:2px;
+}
+.arv .cartao.grande::before{height:3px;bottom:7px}
+
+/* lugar vago: contorno tracejado em ouro apagado, sem papel */
+.arv .cartao.vago{
+    background:transparent;background-image:none;box-shadow:none;
+    border:2px dashed rgba(201,164,92,.35);color:rgba(201,164,92,.45);
+}
+
+@media print{
+    .arvore-caixa{background:#fff!important;outline:0}
+    .arv{--tinta:#000}
+    .arv .cartao{background-image:none;border:1px solid #000;box-shadow:none}
+    .arv .cartao.grande{background:#fff;color:#000;outline:0}
+    .regua-item,.arvore-raiz{color:#000}
+}
