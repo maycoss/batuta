@@ -57,7 +57,7 @@ img{max-width:100%;height:auto}
 /* ── Botões: a "candy button" do sistema, na cor da casa ─────────────────── */
 .bt{
     display:inline-flex;align-items:center;gap:.45rem;
-    font-family:'Outfit',system-ui,sans-serif;font-weight:700;
+    font-family:'Oswald',system-ui,sans-serif;font-weight:700;
     text-transform:uppercase;letter-spacing:.1em;font-size:.78rem;
     border:var(--b) solid var(--tinta);border-radius:var(--r-full);
     padding:.62rem 1.15rem;cursor:pointer;text-decoration:none;line-height:1.1;
@@ -81,7 +81,7 @@ select:focus-visible,textarea:focus-visible,summary:focus-visible{
 .barra-conta{background:var(--creme);border-bottom:var(--b) solid var(--tinta);position:relative;z-index:50}
 .barra-dentro{max-width:1120px;margin:0 auto;padding:.55rem clamp(1rem,4vw,2rem);
               display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
-.barra-conta .marca{font-family:'Alfa Slab One',serif;font-size:1rem;color:var(--tinta);text-decoration:none}
+.barra-conta .marca{font-family:'Abril Fatface',serif;font-size:1rem;color:var(--tinta);text-decoration:none}
 
 /* ── Ícones: traço grosso, e nunca soltos ────────────────────────────────────
    O sistema é explícito: um "check" não é um check, é um check DENTRO de um
@@ -98,7 +98,7 @@ select:focus-visible,textarea:focus-visible,summary:focus-visible{
 .bt:hover .bolinha{animation:sacode .5s var(--mola)}
 @keyframes sacode{0%{transform:rotate(0)}30%{transform:rotate(9deg)}60%{transform:rotate(-9deg)}100%{transform:rotate(0)}}
 .barra-conta nav{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
-.barra-conta .quem-sou{font-family:'Outfit',sans-serif;font-weight:600;font-size:.85rem}
+.barra-conta .quem-sou{font-family:'Oswald',sans-serif;font-weight:600;font-size:.85rem}
 .barra-conta .quem-sou em{color:var(--musgo);font-size:.78rem}
 .avatar{border-radius:var(--r-full);border:var(--b) solid var(--tinta);object-fit:cover;width:30px;height:30px}
 
@@ -118,13 +118,13 @@ select:focus-visible,textarea:focus-visible,summary:focus-visible{
    .confete por especificidade e devolve os enfeites para o fluxo do texto */
 .verbete > *:not(.confete){position:relative;z-index:1}
 .chapeu{
-    font-family:'Outfit',sans-serif;font-weight:700;text-transform:uppercase;
+    font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;
     letter-spacing:.2em;font-size:.74rem;color:var(--verde);
     display:inline-block;border:var(--b) solid var(--verde);border-radius:var(--r-full);
     padding:.35rem .95rem;margin-bottom:1.5rem;background:var(--creme);box-shadow:var(--pop-baixa);
 }
 h1{
-    font-family:'Alfa Slab One',serif;font-weight:400;color:var(--tinta);
+    font-family:'Abril Fatface',serif;font-weight:400;color:var(--tinta);
     font-size:clamp(3rem,12vw,6.5rem);line-height:1;letter-spacing:.01em;
     text-shadow:5px 5px 0 var(--creme);
 }
@@ -132,7 +132,7 @@ h1{
 .definicoes{list-style:none;max-width:620px;display:grid;gap:.9rem}
 .definicoes li{display:flex;gap:.8rem;align-items:baseline}
 .definicoes .num{
-    font-family:'Outfit',sans-serif;font-weight:800;color:var(--creme);
+    font-family:'Oswald',sans-serif;font-weight:800;color:var(--creme);
     background:var(--tinta);min-width:1.6rem;height:1.6rem;border-radius:var(--r-full);
     display:inline-flex;align-items:center;justify-content:center;font-size:.85rem;flex:none;
     position:relative;top:.15rem;
@@ -145,7 +145,7 @@ h1{
 .definicoes li.essa .num{background:var(--vermelho)}
 .definicoes li.essa strong{color:var(--vermelho)}
 .carimbo{
-    font-family:'Outfit',sans-serif;font-weight:700;text-transform:uppercase;
+    font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;
     letter-spacing:.12em;font-size:.72rem;color:var(--vermelho);
     display:inline-block;transform:rotate(-2deg);margin-top:.2rem;
 }
@@ -158,7 +158,7 @@ h1{
 /* o sistema pede py-24 (96px). Aqui o teto é 4rem porque as seções já vêm
    separadas pelo divisor da batuta, que ocupa espaço vertical por conta dele */
 section{padding:clamp(1.8rem,6vw,4rem) 0;position:relative}
-h2{font-family:'Alfa Slab One',serif;font-weight:400;font-size:clamp(1.6rem,5vw,2.3rem);margin-bottom:.35rem}
+h2{font-family:'Abril Fatface',serif;font-weight:400;font-size:clamp(1.6rem,5vw,2.3rem);margin-bottom:.35rem}
 /* rabisco sublinhando o título — o "squiggle" do sistema, em SVG embutido */
 h2::after{
     content:"";display:block;width:118px;height:11px;margin:.15rem 0 .5rem;
@@ -170,7 +170,7 @@ h2.sem-rabisco::after{display:none}
         border-radius:var(--r-sm);padding:.7rem 1rem;margin-bottom:1.2rem;font-size:.92rem;box-shadow:var(--pop-baixa)}
 .aviso{background:var(--branco);border:var(--b) solid var(--vermelho);color:var(--vermelho);
        border-radius:var(--r-sm);padding:.65rem .85rem;font-size:.92rem;margin-bottom:.9rem}
-.rotulo{font-family:'Outfit',sans-serif;font-weight:700;text-transform:uppercase;
+.rotulo{font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;
         letter-spacing:.12em;font-size:.7rem;color:var(--verde)}
 
 /* ── Busca ───────────────────────────────────────────────────────────────── */
@@ -205,12 +205,12 @@ h2.sem-rabisco::after{display:none}
 .regua{position:relative;flex:none;width:74px;align-self:stretch}
 .regua-item{
     position:absolute;right:0;transform:translateY(-50%);text-align:right;width:100%;
-    font-family:'Outfit',sans-serif;font-weight:700;text-transform:uppercase;
+    font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;
     letter-spacing:.09em;font-size:.6rem;color:var(--verde);line-height:1.1;
 }
 .legenda-arvore{
     display:flex;flex-wrap:wrap;gap:.35rem 1.1rem;margin:.7rem 0 0 .2rem;
-    font-family:'Outfit',sans-serif;font-size:.72rem;color:var(--musgo);
+    font-family:'Oswald',sans-serif;font-size:.72rem;color:var(--musgo);
 }
 .legenda-arvore span{display:inline-flex;align-items:center;gap:.35rem}
 .am{width:14px;height:14px;border-radius:4px;border:var(--b) solid var(--tinta);display:inline-block}
@@ -218,7 +218,7 @@ h2.sem-rabisco::after{display:none}
 .am.fem{background:var(--azul)}
 .am.vago{background:transparent;border-style:dashed;border-color:rgba(39,33,26,.35)}
 .arvore-topo{display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap;padding:0 0 .8rem .6rem}
-.arvore-raiz{font-family:'Outfit',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;color:var(--verde)}
+.arvore-raiz{font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;color:var(--verde)}
 .arvore-topo a{font-size:.85rem}
 /* A árvore é um diagrama centrado numa pessoa: o que veio antes sobe, o que
    veio depois desce. Os traços são borda de pseudo-elemento — meio-trilho à
@@ -294,7 +294,7 @@ h2.sem-rabisco::after{display:none}
     width:138px;height:118px;overflow:hidden;
     background:var(--creme);border:var(--b) solid var(--tinta);border-radius:var(--r-md);
     box-shadow:var(--pop-baixa);padding:.45rem .4rem;
-    font-family:'Outfit',sans-serif;color:var(--tinta);cursor:pointer;
+    font-family:'Oswald',sans-serif;color:var(--tinta);cursor:pointer;
     transition:transform var(--tempo) var(--mola),box-shadow var(--tempo) ease;
 }
 .cartao:hover,.cartao:focus-visible{transform:translate(-2px,-2px);box-shadow:var(--pop);outline:none;z-index:2}
@@ -374,8 +374,8 @@ h2.sem-rabisco::after{display:none}
     animation:pipoca .3s var(--mola);
 }
 @keyframes pipoca{from{transform:scale(.9) rotate(-1.5deg);opacity:0}to{transform:none;opacity:1}}
-.ficha h3{font-family:'Alfa Slab One',serif;font-weight:400;font-size:1.35rem;margin-bottom:.2rem}
-.ficha .rot{font-family:'Outfit',sans-serif;font-weight:700;text-transform:uppercase;
+.ficha h3{font-family:'Abril Fatface',serif;font-weight:400;font-size:1.35rem;margin-bottom:.2rem}
+.ficha .rot{font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;
             letter-spacing:.12em;font-size:.7rem;color:var(--verde);margin-top:.95rem}
 .ficha p{font-size:.95rem}
 .ficha .lk{background:none;border:none;cursor:pointer;font-family:'Lora',serif;font-size:.95rem;
@@ -387,7 +387,7 @@ h2.sem-rabisco::after{display:none}
     background:var(--papel);border:var(--b) dashed var(--tinta);border-radius:var(--r-md);
     padding:.85rem .95rem;margin-top:1rem;font-size:.88rem;
 }
-.ficha-cadeado strong{display:block;font-family:'Outfit',sans-serif;text-transform:uppercase;
+.ficha-cadeado strong{display:block;font-family:'Oswald',sans-serif;text-transform:uppercase;
                       letter-spacing:.1em;font-size:.7rem;margin-bottom:.25rem}
 
 /* ── Formulários ─────────────────────────────────────────────────────────── */
@@ -397,7 +397,7 @@ h2.sem-rabisco::after{display:none}
 }
 .caixa-form.larga{max-width:100%}
 .caixa-form label{
-    display:block;font-family:'Outfit',sans-serif;font-weight:700;
+    display:block;font-family:'Oswald',sans-serif;font-weight:700;
     text-transform:uppercase;letter-spacing:.11em;font-size:.72rem;margin-bottom:.3rem;
 }
 .caixa-form input[type=text],.caixa-form input[type=email],.caixa-form input[type=password],
@@ -413,7 +413,7 @@ h2.sem-rabisco::after{display:none}
 .caixa-form textarea{min-height:96px;resize:vertical}
 .caixa-form .dica{font-size:.8rem;color:var(--musgo);margin:-.6rem 0 .95rem;text-align:justify;hyphens:auto}
 .caixa-form button[type=submit]{
-    font-family:'Outfit',sans-serif;font-weight:700;text-transform:uppercase;
+    font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;
     letter-spacing:.12em;font-size:.82rem;color:var(--creme);background:var(--vermelho);
     border:var(--b) solid var(--tinta);border-radius:var(--r-full);padding:.75rem 1.6rem;cursor:pointer;
     box-shadow:var(--pop);min-height:48px;
@@ -435,7 +435,7 @@ h2.sem-rabisco::after{display:none}
 .pote-de-mel{position:absolute;left:-9999px;top:-9999px}
 details.dobra{margin-top:1.3rem}
 details.dobra > summary{
-    cursor:pointer;font-family:'Outfit',sans-serif;font-weight:700;text-transform:uppercase;
+    cursor:pointer;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;
     letter-spacing:.12em;font-size:.8rem;color:var(--vermelho);
     display:inline-block;border:var(--b) solid var(--tinta);border-radius:var(--r-full);
     padding:.5rem 1.1rem;background:var(--creme);box-shadow:var(--pop-baixa);list-style:none;
@@ -489,7 +489,7 @@ details.dobra > summary:hover{transform:translate(-2px,-2px);box-shadow:var(--po
 /* nth-of-type, não nth-child: o primeiro filho da grade é o <svg> da linha */
 .trio article:nth-of-type(2) .adesivo-icone{background:var(--verde)}
 .trio article:nth-of-type(3) .adesivo-icone{background:var(--papel);color:var(--tinta)}
-.trio h3{font-family:'Outfit',sans-serif;font-weight:800;font-size:1.05rem;margin-bottom:.35rem}
+.trio h3{font-family:'Oswald',sans-serif;font-weight:800;font-size:1.05rem;margin-bottom:.35rem}
 .trio p{font-size:.93rem;text-align:justify;hyphens:auto}
 
 /* ── Marquee: os sobrenomes da árvore passando devagar ───────────────────── */
@@ -500,7 +500,7 @@ details.dobra > summary:hover{transform:translate(-2px,-2px);box-shadow:var(--po
 .marquise-trilho{display:flex;width:max-content;animation:desliza 42s linear infinite}
 .marquise:hover .marquise-trilho{animation-play-state:paused}
 .marquise span{
-    font-family:'Outfit',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.14em;
+    font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.14em;
     font-size:.8rem;padding:0 1.1rem;white-space:nowrap;color:var(--tinta);
 }
 .marquise span::after{content:"\25C6";color:var(--vermelho);margin-left:1.1rem}
@@ -512,7 +512,7 @@ details.dobra > summary:hover{transform:translate(-2px,-2px);box-shadow:var(--po
 .pipoca-1{animation-delay:.05s} .pipoca-2{animation-delay:.13s}
 .pipoca-3{animation-delay:.21s} .pipoca-4{animation-delay:.29s}
 .historia{max-width:740px;transform:rotate(-.3deg)}
-.historia h3{font-family:'Alfa Slab One',serif;font-weight:400;font-size:1.3rem;margin-bottom:.6rem}
+.historia h3{font-family:'Abril Fatface',serif;font-weight:400;font-size:1.3rem;margin-bottom:.6rem}
 .historia p{margin-bottom:.9rem;font-size:.98rem;text-align:justify;hyphens:auto}
 .historia .fonte{font-size:.8rem;color:var(--musgo);font-style:italic;text-align:left}
 .historia .destaque{color:var(--vermelho);font-weight:600}
@@ -527,8 +527,8 @@ details.dobra > summary:hover{transform:translate(-2px,-2px);box-shadow:var(--po
 .recado:nth-child(3n+1){transform:rotate(-.7deg)}
 .recado:nth-child(3n+2){transform:rotate(.6deg)}
 .recado:nth-child(3n){transform:rotate(-.2deg)}
-.recado .quem{font-family:'Alfa Slab One',serif;font-size:1rem;margin-bottom:.15rem}
-.recado .quando{font-family:'Outfit',sans-serif;font-weight:600;font-size:.7rem;
+.recado .quem{font-family:'Abril Fatface',serif;font-size:1rem;margin-bottom:.15rem}
+.recado .quando{font-family:'Oswald',sans-serif;font-weight:600;font-size:.7rem;
                 text-transform:uppercase;letter-spacing:.1em;color:var(--musgo);margin-bottom:.5rem}
 .recado p{overflow-wrap:anywhere;text-align:justify;hyphens:auto}
 .mural-vazio{background:var(--creme);border:var(--b) dashed var(--tinta);border-radius:var(--r-md);
@@ -544,7 +544,7 @@ details.dobra > summary:hover{transform:translate(-2px,-2px);box-shadow:var(--po
 .pessoa-topo{display:flex;gap:1.2rem;align-items:flex-start;flex-wrap:wrap;margin-bottom:1.2rem}
 .pessoa-topo h1{font-size:clamp(1.8rem,6vw,3rem);text-shadow:3px 3px 0 var(--creme)}
 .pessoa-selo{
-    font-family:'Outfit',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+    font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
     font-size:.68rem;border:var(--b) solid var(--tinta);border-radius:var(--r-full);
     padding:.3rem .8rem;background:var(--creme);display:inline-block;box-shadow:var(--pop-baixa);
 }
@@ -553,7 +553,7 @@ details.dobra > summary:hover{transform:translate(-2px,-2px);box-shadow:var(--po
 @media (min-width:700px){.pessoa-grade{grid-template-columns:1fr 1fr}}
 .pessoa-grade dl{background:var(--creme);border:var(--b) solid var(--tinta);border-radius:var(--r-md);
                  padding:1rem 1.1rem;box-shadow:var(--pop-suave)}
-.pessoa-grade dt{font-family:'Outfit',sans-serif;font-weight:700;text-transform:uppercase;
+.pessoa-grade dt{font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;
                  letter-spacing:.11em;font-size:.68rem;color:var(--verde);margin-top:.7rem}
 .pessoa-grade dt:first-child{margin-top:0}
 .pessoa-grade dd{font-size:.98rem}
@@ -572,11 +572,11 @@ details.dobra > summary:hover{transform:translate(-2px,-2px);box-shadow:var(--po
         border:var(--b) solid var(--tinta);border-radius:var(--r-md);overflow:hidden}
 .tabela th,.tabela td{padding:.6rem .7rem;border-bottom:1px solid rgba(39,33,26,.18);
                       text-align:left;font-size:.9rem;vertical-align:top}
-.tabela th{font-family:'Outfit',sans-serif;font-weight:700;text-transform:uppercase;
+.tabela th{font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;
            letter-spacing:.1em;font-size:.68rem;background:var(--papel)}
 .tabela tr:last-child td{border-bottom:none}
 .rolagem{overflow-x:auto;border-radius:var(--r-md);box-shadow:var(--pop-suave)}
-.etiqueta{font-family:'Outfit',sans-serif;font-weight:700;font-size:.66rem;text-transform:uppercase;
+.etiqueta{font-family:'Oswald',sans-serif;font-weight:700;font-size:.66rem;text-transform:uppercase;
           letter-spacing:.09em;border:var(--b) solid var(--tinta);border-radius:var(--r-full);
           padding:.15rem .6rem;display:inline-block}
 .etiqueta.pendente{background:var(--papel)}
@@ -586,7 +586,7 @@ details.dobra > summary:hover{transform:translate(-2px,-2px);box-shadow:var(--po
 /* ── Rodapé ──────────────────────────────────────────────────────────────── */
 footer{background:var(--verde);color:var(--creme);margin-top:3rem;
        padding:2.2rem 0 2.4rem;text-align:center;border-top:var(--b) solid var(--tinta)}
-footer .lema{font-family:'Alfa Slab One',serif;font-size:1.15rem;margin-bottom:.3rem}
+footer .lema{font-family:'Abril Fatface',serif;font-size:1.15rem;margin-bottom:.3rem}
 footer small{color:rgba(248,241,222,.85);font-size:.82rem}
 .rodape-links{margin-top:1rem;font-size:.86rem}
 .rodape-links a{color:var(--papel)}
@@ -666,7 +666,209 @@ footer small{color:rgba(248,241,222,.85);font-size:.82rem}
 
 /* endereço de e-mail para copiar, dentro do painel de contato */
 .fale-endereco{
-    font-family:'Outfit',sans-serif;font-weight:700;font-size:.95rem;
+    font-family:'Oswald',sans-serif;font-weight:700;font-size:.95rem;
     background:var(--branco);border:var(--b) solid var(--tinta);border-radius:var(--r-sm);
     padding:.45rem .7rem;user-select:all;
+}
+
+/* ===========================================================================
+   Pegada retrô (17/10/2026)
+   ---------------------------------------------------------------------------
+   Álbum de família dos anos 60/70 — a Boa Vista do Batuta. Papel envelhecido,
+   tinta sépia, as três listras de 70 (mostarda, laranja, tijolo), raios de sol
+   atrás do verbete, letreiro de cinema no lugar do marquee e foto com moldura
+   de revelação. Esta camada vem POR CIMA do resto e mexe só em cor, borda e
+   enfeite: a largura e a altura fixas dos cartões da árvore ficam como estão
+   (desalinhar a árvore foi reclamação duas vezes).
+
+   Tipografia: Abril Fatface (cartaz) · Oswald (interface, condensada — cabe
+   melhor nos cartões) · Special Elite (máquina de escrever, nos rótulos) ·
+   Lora (texto corrido).
+   =========================================================================== */
+
+:root{
+    --papel:#E6D3AE;      /* papel de álbum amarelado */
+    --creme:#F5EBD3;
+    --branco:#FBF6E8;
+    --tinta:#3A2A1F;      /* sépia escura */
+    --musgo:#7A6450;
+    --vermelho:#B0432B;   /* tijolo desbotado */
+    --verde:#56693A;      /* verde-oliva */
+    --azul:#2F6670;       /* petróleo */
+    --mostarda:#D79A2B;
+    --laranja:#C4662A;
+
+    --r-sm:4px; --r-md:6px; --r-lg:10px;
+    --pop:4px 4px 0 var(--tinta);
+    --pop-alta:6px 6px 0 var(--tinta);
+    --pop-baixa:2px 2px 0 var(--tinta);
+    --pop-suave:6px 6px 0 rgba(58,42,31,.2);
+
+    /* as três listras de 70 */
+    --listras:linear-gradient(var(--mostarda) 0 33.3%,var(--laranja) 0 66.6%,var(--vermelho) 0);
+}
+
+body{
+    background-color:var(--papel);
+    background-image:
+        radial-gradient(ellipse at 50% 0,rgba(255,248,230,.55),transparent 60%),
+        radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(90,60,30,.22) 100%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .23 0 0 0 0 .16 0 0 0 0 .1 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+    background-size:auto,auto,180px 180px;
+    background-attachment:fixed,fixed,scroll;
+}
+::selection{background:var(--mostarda);color:var(--tinta)}
+
+/* ── Barra do alto: tinta escura com as listras embaixo ── */
+.barra-conta{background:var(--tinta);border-bottom:0}
+.barra-conta::after{content:"";display:block;height:12px;background:var(--listras)}
+.barra-conta .marca{color:var(--creme);font-size:1.15rem;letter-spacing:.02em}
+.barra-conta .bt-doce{box-shadow:3px 3px 0 var(--mostarda)}
+.barra-conta .bt-doce:hover{box-shadow:5px 5px 0 var(--mostarda)}
+
+/* ── Botões: etiqueta de loja antiga, não pílula ── */
+.bt{border-radius:var(--r-sm);font-weight:600;letter-spacing:.14em;font-size:.82rem}
+.bt-fantasma:hover{background:var(--mostarda)}
+.bolinha{border-radius:var(--r-full)}
+
+/* ── O verbete: raios de sol atrás, letra de cartaz com sombra em degrau ── */
+.verbete{overflow:hidden;border-bottom:2px dashed rgba(58,42,31,.3);margin-bottom:.4rem}
+.verbete::before{
+    content:"";position:absolute;z-index:0;pointer-events:none;
+    width:1100px;height:1100px;left:-330px;top:-470px;
+    background:repeating-conic-gradient(from 0deg,rgba(215,154,43,.26) 0 7.5deg,transparent 7.5deg 15deg);
+    -webkit-mask:radial-gradient(circle,#000 0 18%,transparent 62%);
+            mask:radial-gradient(circle,#000 0 18%,transparent 62%);
+}
+.confete-1{background:var(--mostarda);opacity:.35;border:0}
+.confete-3{border-bottom-color:var(--azul);opacity:.55}
+.chapeu{
+    font-family:'Special Elite','Courier New',monospace;font-weight:400;letter-spacing:.12em;
+    color:var(--vermelho);border-color:var(--vermelho);border-radius:var(--r-sm);
+    background:var(--branco);box-shadow:none;transform:rotate(-1.5deg);
+    outline:1px dashed var(--vermelho);outline-offset:3px;
+}
+h1{
+    color:var(--creme);letter-spacing:.02em;
+    -webkit-text-stroke:2px var(--tinta);paint-order:stroke fill;
+    text-shadow:4px 4px 0 var(--mostarda),8px 8px 0 var(--vermelho),12px 12px 0 var(--tinta);
+}
+.fonetica{font-family:'Special Elite','Courier New',monospace;font-style:normal;font-size:.98rem}
+.definicoes .num{border-radius:var(--r-sm);font-family:'Abril Fatface',serif;font-weight:400}
+.definicoes li.essa{border-radius:var(--r-sm);outline:1px solid rgba(58,42,31,.35);outline-offset:-6px;box-shadow:5px 5px 0 var(--mostarda),5px 5px 0 2px var(--tinta)}
+.carimbo{
+    font-family:'Special Elite','Courier New',monospace;font-weight:400;
+    border:2px solid var(--vermelho);border-radius:var(--r-sm);padding:.05rem .45rem;
+    transform:rotate(-4deg);opacity:.9;
+}
+
+/* ── Títulos: as três listras no lugar do rabisco ── */
+h2{letter-spacing:.01em}
+h2::after{
+    width:132px;height:9px;margin:.35rem 0 .6rem;border-radius:2px;
+    background:var(--listras);
+}
+.rotulo,.ficha .rot,.pessoa-grade dt,.arvore-raiz{
+    font-family:'Special Elite','Courier New',monospace;font-weight:400;letter-spacing:.08em;
+}
+
+/* ── Divisor ── */
+.batuta-divisor svg{filter:sepia(.5) saturate(.8)}
+
+/* ── Busca: campo de ficha datilografada ── */
+.busca-caixa input{border-radius:var(--r-sm);font-family:'Special Elite','Courier New',monospace}
+.busca-res{border-radius:var(--r-sm)}
+.busca-res button:hover,.busca-res button:focus-visible{background:var(--mostarda)}
+
+/* ── Árvore: folha de álbum com moldura de fio ── */
+.arvore-caixa{
+    border-radius:var(--r-lg);background:var(--branco);
+    outline:1px solid rgba(58,42,31,.3);outline-offset:-9px;
+    box-shadow:8px 8px 0 var(--tinta);
+}
+.cartao{border-radius:var(--r-md);background:var(--creme)}
+.cartao.par{background:#EEDDB8}
+.cartao.grande{
+    background:var(--vermelho);box-shadow:5px 5px 0 var(--mostarda),5px 5px 0 2px var(--tinta);
+    outline:1px solid rgba(245,235,211,.55);outline-offset:-6px;
+}
+.cartao-foto{filter:sepia(.45) contrast(1.05)}
+.cartao.masc::before,.cartao.fem::before{border-radius:var(--r-md) var(--r-md) 0 0}
+.am{border-radius:2px}
+
+/* ── Ficha (modal) ── */
+.ficha{border-radius:var(--r-lg);box-shadow:8px 8px 0 var(--mostarda),8px 8px 0 2px var(--tinta);
+       outline:1px solid rgba(58,42,31,.25);outline-offset:-8px}
+.ficha-fundo{background:rgba(40,26,16,.62)}
+.ficha-cadeado{border-radius:var(--r-sm)}
+
+/* ── Cartões adesivo, histórias, convites ── */
+.adesivo,.convite,.pessoa-grade dl,.recado,.caixa-form,.mural-vazio{border-radius:var(--r-md)}
+.adesivo{outline:1px solid rgba(58,42,31,.25);outline-offset:-8px}
+.adesivo-icone{border-radius:var(--r-full);box-shadow:3px 3px 0 var(--tinta)}
+.trio .adesivo{--pop-cor:var(--mostarda)}
+.trio article:nth-of-type(3) .adesivo-icone{background:var(--mostarda)}
+.historia p:first-of-type::first-letter{
+    font-family:'Abril Fatface',serif;float:left;font-size:3.4em;line-height:.85;
+    padding:.08em .12em 0 0;color:var(--vermelho);
+}
+.historia .fonte,.recado .quando,.migalhas{font-family:'Special Elite','Courier New',monospace;font-style:normal}
+.recado{background:#FFF6D6;box-shadow:3px 4px 0 rgba(58,42,31,.25)}
+.recado::before{
+    content:"";position:absolute;top:-9px;left:50%;width:70px;height:20px;margin-left:-35px;
+    background:rgba(215,154,43,.55);transform:rotate(-3deg);
+}
+.recado{position:relative}
+
+/* ── Letreiro de cinema: os sobrenomes entre lâmpadas ── */
+.marquise{
+    background:var(--tinta);border:0;padding:.95rem 0;position:relative;
+    box-shadow:0 6px 0 var(--vermelho);
+}
+.marquise::before,.marquise::after{
+    content:"";position:absolute;left:0;right:0;height:6px;
+    background:radial-gradient(circle,#FFE29A 0 2px,rgba(255,226,154,.25) 2.6px,transparent 3.2px) 0 0/16px 6px repeat-x;
+}
+.marquise::before{top:3px}
+.marquise::after{bottom:3px}
+.marquise span{color:var(--mostarda);font-size:.95rem;letter-spacing:.2em}
+.marquise span::after{content:"\2605";color:var(--creme)}
+
+/* ── Retrato e álbum: foto de revelação, com margem branca e tom sépia ── */
+.retrato,.album img,.ficha-retrato{
+    border-radius:2px;background:#FFFDF6;padding:6px 6px 20px;
+    filter:sepia(.35) contrast(1.03);
+    border:1px solid rgba(58,42,31,.35);box-shadow:4px 5px 0 rgba(58,42,31,.28);
+    transition:filter .25s,transform .15s,box-shadow .15s;
+}
+.album a:hover img,.retrato:hover{filter:none}
+
+/* ── Lista de parentes ── */
+.lista-parentes a{border-radius:var(--r-sm)}
+.lista-parentes a:hover{background:var(--mostarda)}
+.pessoa-selo{border-radius:var(--r-sm);font-family:'Special Elite','Courier New',monospace;font-weight:400}
+.pessoa-topo h1{font-size:clamp(1.9rem,6vw,3.2rem);text-shadow:3px 3px 0 var(--mostarda),6px 6px 0 var(--tinta)}
+
+/* ── Rodapé: tinta escura, listras por cima ── */
+footer{background:var(--tinta);border-top:0;position:relative;padding-top:2.8rem}
+footer::before{content:"";position:absolute;top:0;left:0;right:0;height:12px;background:var(--listras)}
+footer .lema{font-size:1.5rem;color:var(--mostarda)}
+.rodape-links a,.rodape-lgpd a{color:var(--mostarda)}
+
+@media (max-width:600px){
+    h1{-webkit-text-stroke:1.5px var(--tinta);text-shadow:3px 3px 0 var(--mostarda),6px 6px 0 var(--vermelho)}
+    .verbete::before{width:760px;height:760px;left:-300px;top:-330px}
+    .chapeu,.carimbo{transform:none}
+    .chapeu{outline:0}
+}
+@media (prefers-reduced-motion:reduce){
+    .chapeu,.carimbo{transform:none}
+    .chapeu{outline:0}
+}
+@media print{
+    .barra-conta::after,footer::before,.verbete::before,.marquise{display:none!important}
+    body{background:#fff!important}
+    h1{color:#000;-webkit-text-stroke:0;text-shadow:none}
+    .arvore-caixa{outline:0}
+    .cartao.grande{outline:0;box-shadow:none}
 }
