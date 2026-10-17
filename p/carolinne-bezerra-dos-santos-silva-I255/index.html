@@ -99,11 +99,8 @@
   <div class="ficha">
     <h3>Falar com a fam&iacute;lia</h3>
     <p class="rot" id="fale-assunto"></p>
-    <p class="sub" style="margin:.6rem 0 1rem">Escreva para a fam&iacute;lia por e-mail.</p>
-    <p style="display:flex;flex-wrap:wrap;gap:.5rem">
-        <a class="bt bt-fantasma" id="fale-mailto" href="mailto:maycoss@gmail.com">Abrir meu e-mail</a>
-    </p>
-    <p class="rot" style="margin-top:1.1rem">Ou copie o endere&ccedil;o</p>
+    <p class="sub" style="margin:.6rem 0 1rem">Escreva para a fam&iacute;lia por e-mail. Copie o endere&ccedil;o abaixo e mande pelo seu e-mail.</p>
+    <p class="rot" style="margin-top:.4rem">Endere&ccedil;o</p>
     <p style="display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:.3rem">
         <span class="fale-endereco" id="fale-endereco">maycoss@gmail.com</span>
         <button type="button" class="bt bt-fantasma" id="fale-copiar">Copiar</button>
@@ -115,19 +112,17 @@
 (function () {
     var fundo = document.getElementById('fale-fundo');
     if (!fundo) return;
-    var mail = document.getElementById('fale-mailto');
     var assuntoEl = document.getElementById('fale-assunto');
     var endereco = document.getElementById('fale-endereco').textContent.trim();
 
     document.addEventListener('click', function (ev) {
         var a = ev.target.closest ? ev.target.closest('a[href^="mailto:"]') : null;
-        if (!a || a.id === 'fale-mailto') return;
+        if (!a) return;
         ev.preventDefault();
         var href = a.getAttribute('href');
         var m = href.match(/[?&]subject=([^&]*)/);
         var assunto = m ? decodeURIComponent(m[1].replace(/\+/g, ' ')) : 'Família Batuta';
         assuntoEl.textContent = assunto;
-        mail.href = href;
         fundo.classList.add('aberta');
     });
 
