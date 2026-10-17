@@ -18,14 +18,14 @@ do tamanho da parede.
 
 ## Privacidade
 
-De quem está vivo, estas páginas mostram **apenas nome e parentesco**. Data de
-nascimento, lugar, ofício, foto e notas não são publicados — não estão escondidos
+De quem está vivo, estas páginas mostram **apenas nome, parentesco e foto**. Data de
+nascimento, lugar, ofício e notas não são publicados — não estão escondidos
 por CSS, simplesmente não existem nos arquivos. Quem já faleceu tem ficha
 completa: é história da família.
 
-**Por isso as fotos são só de quem já faleceu** (26 pessoas, 83 imagens). Este
-repositório é público e não tem login: foto de pessoa viva não teria onde ficar
-reservada. As imagens foram regravadas como JPEG, o que apaga o EXIF — foto de
+**Fotos:** desde 17/10/2026 a família decidiu publicar foto de vivos e de
+falecidos (213 rostos, 618 imagens). Do resto, quem está vivo continua só com
+nome e parentesco. As imagens foram regravadas como JPEG, o que apaga o EXIF — foto de
 celular costuma carregar a coordenada de onde foi tirada.
 
 O arquivo `arvore.json`, que traz a árvore inteira sem essa máscara, **não pode

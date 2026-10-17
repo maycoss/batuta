@@ -1065,3 +1065,9 @@ footer .lema{font-size:1.5rem;color:var(--mostarda)}
     .acima[data-ger="a1"]::before{bottom:calc(30px + 18px + 110px - .3rem - 28px)}
 }
 @media print{.acima::before{border-color:#000}}
+
+/* arrastar a árvore com o mouse (o JS está no index) */
+@media (hover:hover){
+    .arvore-rolagem{cursor:grab}
+    .arvore-rolagem.arrastando,.arvore-rolagem.arrastando .cartao{cursor:grabbing;user-select:none}
+}
