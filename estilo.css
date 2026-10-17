@@ -943,3 +943,125 @@ footer .lema{font-size:1.5rem;color:var(--mostarda)}
     .arv .cartao.grande{background:#fff;color:#000;outline:0}
     .regua-item,.arvore-raiz{color:#000}
 }
+
+/* ===========================================================================
+   Retratos redondos (17/10/2026 — pedido dele: "a árvore com as fotos
+   redondas mesmo")
+   ---------------------------------------------------------------------------
+   Em cima da folha de álbum, cada pessoa é um retrato num aro redondo com o
+   nome embaixo, sem cartão de papel. Quem não tem foto (todo mundo vivo, e a
+   maioria de quem já se foi) ganha uma silhueta no aro. A cor do aro diz
+   homem/mulher — a tira some. O RETÂNGULO do cartão continua com a largura e
+   a altura fixas de antes: só ficou invisível, e é ele que segura as fileiras.
+   =========================================================================== */
+.arv .cartao{
+    --aro:#C9A45C;--disco:68px;
+    background:transparent;background-image:none;border:0;border-radius:0;box-shadow:none;
+    justify-content:flex-start;padding:.3rem .25rem 0;gap:.3rem;color:#F2E6CB;
+}
+.arv .cartao.masc{--aro:#7E9A55}
+.arv .cartao.fem {--aro:#4F97A3}
+.arv .cartao.masc::before,.arv .cartao.fem::before{display:none}
+
+/* o disco: a foto quando existe, a silhueta quando não */
+.arv .cartao-foto,
+.arv .cartao:not(.vago):not(:has(.cartao-foto))::after{
+    width:var(--disco);height:var(--disco);flex:none;border-radius:50%;
+    border:3px solid var(--aro);
+    box-shadow:0 0 0 2px #221A14,0 0 0 3px rgba(201,164,92,.45),0 4px 10px rgba(0,0,0,.55);
+    transition:box-shadow .2s,transform .2s;
+}
+.arv .cartao-foto{object-fit:cover;object-position:top;filter:sepia(.3) contrast(1.05)}
+.arv .cartao:not(.vago):not(:has(.cartao-foto))::after{
+    content:"";order:-1;
+    background:#3A2E24 no-repeat center 70%/72% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='14' r='8' fill='%23A08A6C'/%3E%3Cpath d='M4 40c0-10 7-16 16-16s16 6 16 16z' fill='%23A08A6C'/%3E%3C/svg%3E");
+}
+.arv .cartao-nome,.arv .cartao.grande .cartao-nome,.arv .cartao.pequeno .cartao-nome{color:#F2E6CB;font-weight:600;-webkit-line-clamp:2}
+.arv .cartao-datas{color:rgba(232,201,138,.75)}
+
+.arv .cartao:hover,.arv .cartao:focus-visible{transform:none;box-shadow:none}
+.arv .cartao:hover .cartao-foto,.arv .cartao:focus-visible .cartao-foto,
+.arv .cartao:not(.vago):not(:has(.cartao-foto)):hover::after,
+.arv .cartao:not(.vago):not(:has(.cartao-foto)):focus-visible::after{
+    transform:scale(1.06);
+    box-shadow:0 0 0 2px #221A14,0 0 0 4px var(--mostarda),0 6px 14px rgba(0,0,0,.6);
+}
+.arv .cartao:hover .cartao-nome{color:#FFE29A}
+
+/* tamanhos do disco por geração */
+.arv .cartao.par{--disco:56px;background:transparent}
+.arv .cartao.pequeno{--disco:52px}
+.arv .cartao.grande{
+    --disco:80px;background:transparent;outline:0;box-shadow:none;border:0;
+}
+.arv .cartao.grande .cartao-foto,
+.arv .cartao.grande:not(:has(.cartao-foto))::after{
+    border-width:4px;border-color:var(--vermelho);
+    box-shadow:0 0 0 3px #221A14,0 0 0 5px var(--mostarda),0 6px 16px rgba(0,0,0,.6);
+}
+.arv .cartao.grande .cartao-nome{color:#FFE29A;font-size:1rem}
+.arv .cartao.grande .cartao-datas{color:rgba(232,201,138,.85)}
+
+/* lugar vago: aro tracejado com "?" */
+.arv .cartao.vago{
+    border:0;background:transparent;color:transparent;justify-content:flex-start;
+}
+.arv .cartao.vago::after{
+    content:"?";width:var(--disco);height:var(--disco);border-radius:50%;flex:none;
+    border:2px dashed rgba(201,164,92,.4);color:rgba(201,164,92,.5);
+    display:flex;align-items:center;justify-content:center;font-size:1.3rem;
+}
+
+@media (max-width:640px){
+    .arv .cartao{--disco:56px}
+    .arv .cartao.par,.arv .cartao.pequeno{--disco:44px}
+    .arv .cartao.grande{--disco:72px}
+}
+
+/* legenda: os quadradinhos viram bolinhas, como os aros */
+.legenda-arvore .am{border-radius:50%}
+
+@media print{
+    .arv .cartao{color:#000;border:0}
+    .arv .cartao-nome{color:#000}
+    .arv .cartao-foto,.arv .cartao:not(.vago):not(:has(.cartao-foto))::after{box-shadow:none;border-color:#000}
+}
+
+/* Foto de verdade no mesmo tamanho do aro: a regra antiga
+   .cartao.pequeno .cartao-foto{30px} ganhava desta por vir junto. */
+.arv .cartao .cartao-foto{width:var(--disco);height:var(--disco)}
+
+/* ── Barras de casal, de centro de aro a centro de aro ───────────────────────
+   O cartão agora é invisível e o aro fica no meio dele: a barra antiga, que
+   ia de borda a borda de cartão, sobrava solta no vão. Ela passa a correr na
+   altura do CENTRO do aro e por BAIXO dos discos (opacos), por isso o cartão
+   fica acima do traço. */
+.arv .cartao{position:relative;z-index:1}
+
+/* fileira do meio: pessoa + cônjuges */
+.col:not(:last-child)::after{
+    top:33px;z-index:0;
+    right:calc(-2.4rem - 72px);width:calc(2.4rem + 144px);
+}
+
+/* gerações de cima: o casal são SEMPRE os dois galhos de um .acima, e os dois
+   têm a mesma forma (o vago completa o que falta), logo a mesma largura W.
+   Com o .acima medindo 2W + vão, os centros caem em 25% e 75%, menos/mais um
+   quarto do vão — dá para desenhar sem JavaScript. A altura sai da conta
+   fixa: respiro do .acima + do galho + cartão − centro do aro. */
+.acima > .galho:first-child > .cartao-caixa::after{display:none}
+.acima::before{
+    content:"";position:absolute;z-index:0;
+    left:calc(25% - .125rem);right:calc(25% - .125rem);
+    bottom:calc(36px + 18px + 104px - .3rem - 26px);
+    border-top:var(--b) solid var(--tinta);
+}
+.acima[data-ger="a1"]::before{bottom:calc(36px + 18px + 118px - .3rem - 34px)}
+.acima:has(> .galho > .cartao-caixa > .vago)::before{display:none}
+
+@media (max-width:640px){
+    .col:not(:last-child)::after{top:27px;right:calc(-1.5rem - 58px);width:calc(1.5rem + 116px)}
+    .acima::before{bottom:calc(30px + 18px + 90px - .3rem - 22px)}
+    .acima[data-ger="a1"]::before{bottom:calc(30px + 18px + 110px - .3rem - 28px)}
+}
+@media print{.acima::before{border-color:#000}}
